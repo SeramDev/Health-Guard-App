@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1014775917664",
+    "project_id": "health-guard-ef304",
+    "storage_bucket": "health-guard-ef304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014775917664:android:aecf0af69cad9b5e412705",
+        "android_client_info": {
+          "package_name": "com.example.health_guard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014775917664-p9vnqep5l44f7dns6jr9rtgurpk72m9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNHrvWZLbfUqBR8ekrSjJwFcGF5EkFR9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014775917664-p9vnqep5l44f7dns6jr9rtgurpk72m9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
