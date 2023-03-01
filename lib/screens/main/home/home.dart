@@ -5,6 +5,7 @@ import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/screens/alert/alert.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import '../../../components/custom_text.dart';
+import '../../../components/sensor_data_card.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
@@ -33,15 +34,11 @@ class _HomeState extends State<Home> {
                   SvgPicture.asset(
                     AssetConstants.menuIcon,
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.logout),
-                        onPressed: () {
-                          AuthController().logOut();
-                        },
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: () {
+                      AuthController().logOut();
+                    },
                   ),
                 ],
               ),
@@ -52,7 +49,57 @@ class _HomeState extends State<Home> {
                 color: AppColors.primaryColor,
               ),
               const SizedBox(
-                height: 300,
+                height: 30,
+              ),
+              SizedBox(
+                height: 400,
+                child: Expanded(
+                  child: GridView.builder(
+                    itemCount: 4,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.25,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                    ),
+                    itemBuilder: (context, index) {
+                      return const SensorDataCard();
+                    },
+                  ),
+                ),
+              ),
+              const CustomText(
+                "Status",
+                fontSize: 25,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 10),
+                      blurRadius: 20,
+                      color: AppColors.kAsh.withOpacity(.4),
+                    )
+                  ],
+                ),
+                child: const CustomText(
+                  "Normal",
+                  fontSize: 30,
+                  color: AppColors.kWhite,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               CustomButton(
                 text: "Show Alert",
