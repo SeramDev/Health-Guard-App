@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
+import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class AlertScreen extends StatefulWidget {
   const AlertScreen({super.key});
@@ -109,11 +111,22 @@ class _AlertScreenState extends State<AlertScreen> {
             const SizedBox(
               height: 15,
             ),
-            const CustomText(
-              "03:00:99",
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-              fontSize: 35,
+            SlideCountdown(
+              duration: const Duration(minutes: 1),
+              decoration: const BoxDecoration(color: Colors.transparent),
+              showZeroValue: true,
+              slideAnimationDuration: const Duration(milliseconds: 600),
+              textStyle: const TextStyle(
+                color: AppColors.kWhite,
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
+              ),
+              onDone: () {
+                UtilFunctions.navigateTo(context, const MapScreen());
+              },
+              shouldShowDays: (e) {
+                return false;
+              },
             ),
             const SizedBox(
               height: 14,
