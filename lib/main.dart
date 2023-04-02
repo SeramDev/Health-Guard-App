@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
+import 'package:health_guard/providers/auth/sensorData_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
 import 'package:health_guard/screens/alert/alert.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => SignUpProvider()),
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context) => SensorDataProvider()),
     ],
     child: const MyApp(),
   ));

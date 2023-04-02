@@ -1,10 +1,15 @@
+import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import '../models/objects.dart';
 import '../utils/alert_helper.dart';
+import '../utils/assets_constants.dart';
+import 'file_upload_controller.dart';
+
 
 class AuthController {
   //------------firebase auth instance
@@ -31,7 +36,14 @@ class AuthController {
         //---------------check if the user credential object is not null
         if (value.user != null) {
           //----------------save other user data in cloud firestore
-          await saveUserData(value.user!.uid, name, email);
+          await saveUserData(
+            UserModel(
+              value.user!.uid,
+              name,
+              email,
+              AssetConstants.profileImgUrl,
+            ),
+          );
           //----------------if user created successfully show an alert
           // ignore: use_build_context_synchronously
           AlertHelper.showAlert(
@@ -47,15 +59,11 @@ class AuthController {
   }
 
   //-------------save user data in firestore cloud
-  Future<void> saveUserData(String uid, String name, String email) async {
+  Future<void> saveUserData(UserModel model) async {
     return users
-        .doc(uid)
+        .doc(model.uid)
         .set(
-          {
-            'uid': uid,
-            'name': name,
-            'email': email,
-          },
+          model.toJson(),
           SetOptions(merge: true),
         )
         .then((value) => Logger().i("user data saved"))
@@ -109,5 +117,35 @@ class AuthController {
       AlertHelper.showAlert(context, DialogType.SUCCES, "Reset Email Sent!",
           "Please check your inbox");
     });
+  }
+
+  //-------------upload and update user profile and return image url
+  Future<String> uploadAndUpdateProfileImage(
+    BuildContext context,
+    String uid,
+    File image,
+  ) async {
+    try {
+      //-----------uploading the image file to profile images
+      UploadTask? task =
+          FileUploadController.uploadFile(image, "profileImages");
+
+      final snapshot = await task!.whenComplete(() {});
+
+      //-----------getting the download url
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      //-----------saving the products data in cloud firestore
+      await users.doc(uid).update(
+        {
+          'img': downloadUrl,
+        },
+      );
+
+      return downloadUrl;
+    } catch (e) {
+      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      return "";
+    }
   }
 }

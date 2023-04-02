@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/screens/alert/alert.dart';
 import 'package:health_guard/utils/util_functions.dart';
+import 'package:provider/provider.dart';
 import '../../../components/custom_text.dart';
 import '../../../components/sensor_data_card.dart';
 import '../../../controllers/auth_controller.dart';
+import '../../../providers/auth/sensorData_provider.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
 
@@ -18,6 +22,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(
+      const Duration(seconds: 15),
+      (_) => Provider.of<SensorDataProvider>(context, listen: false)
+          .fetchSensorData(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,22 +73,18 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                height: 400,
-                child: Expanded(
-                  child: GridView.builder(
-                    itemCount: 4,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.25,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                    ),
-                    itemBuilder: (context, index) {
-                      return const SensorDataCard();
-                    },
+              Expanded(
+                child: GridView.builder(
+                  itemCount: 4,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.25,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
                   ),
+                  itemBuilder: (context, index) {
+                    return SensorDataCard(index: index);
+                  },
                 ),
               ),
               const CustomText(
@@ -92,10 +110,18 @@ class _HomeState extends State<Home> {
                     )
                   ],
                 ),
-                child: const CustomText(
-                  "Normal",
-                  fontSize: 30,
-                  color: AppColors.kWhite,
+                child: Consumer<SensorDataProvider>(
+                  builder: (context, value, child) {
+                    return value.isLoading == true
+                        ? const CircularProgressIndicator(
+                            color: AppColors.kWhite,
+                          )
+                        : CustomText(
+                            value.sensorDataModel.status,
+                            fontSize: 30,
+                            color: AppColors.kWhite,
+                          );
+                  },
                 ),
               ),
               const SizedBox(
