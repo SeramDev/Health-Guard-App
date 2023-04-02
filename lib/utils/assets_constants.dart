@@ -1,4 +1,8 @@
 class AssetConstants {
+  //----------------placeholder profile image
+  static const profileImgUrl =
+      "https://st2.depositphotos.com/1104517/11967/v/950/depositphotos_119675554-stock-illustration-male-avatar-profile-picture-vector.jpg";
+
   ///main paths
   static const imagePath = 'assets/images/';
   static const iconPath = 'assets/icons/';
