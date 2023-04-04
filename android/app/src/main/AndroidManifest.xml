@@ -4,6 +4,11 @@
         android:label="health_guard"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- TODO: Add your API key here :: Done (x)  -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBEVY6U3e94MZn3xbu9faknnldEqJiiWgE"/>
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"
