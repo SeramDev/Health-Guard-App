@@ -1,5 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.health_guard">
+
+    <!-- TODO: Permissions for Internet Access-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- TODO: Permissons for location plugin :: Done (x)  -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
    <application
         android:label="health_guard"
         android:name="${applicationName}"

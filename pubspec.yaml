@@ -37,6 +37,8 @@ dependencies:
 
   #degits dependecies
   google_maps_flutter: ^2.2.5
+  flutter_polyline_points: ^1.0.0
+  location: ^4.4.0
   #
   cupertino_icons: ^1.0.2
   awesome_dialog: ^2.2.1
@@ -83,6 +85,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/map/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

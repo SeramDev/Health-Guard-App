@@ -5,6 +5,8 @@ import 'package:health_guard/providers/auth/sensorData_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
 import 'package:health_guard/screens/alert/alert.dart';
+import 'package:health_guard/screens/map/map.dart';
+import 'package:health_guard/screens/map/map_model.dart';
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -22,6 +24,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
       ChangeNotifierProvider(create: (context) => SensorDataProvider()),
+      ChangeNotifierProvider(create: (context) => MapDataModel()),
     ],
     child: const MyApp(),
   ));
@@ -33,11 +36,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Splash(),
+      //For testing Hard coded the screen
+      home: PoliceMedicalMapScreen(user: User.police,), //const Splash(),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,
