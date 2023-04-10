@@ -4,6 +4,7 @@ import 'package:health_guard/screens/auth/forgot_password.dart';
 import 'package:health_guard/screens/auth/signup.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dropdown_login.dart';
 import '../../components/custom_socialbutton.dart';
 import '../../components/custom_text.dart';
 import '../../components/custom_textfield.dart';
@@ -56,19 +57,23 @@ class _LoginState extends State<Login> {
                     height: 39,
                   ),
                   CustomTextfield(
-                    hintText: "Email",
+                    lableText: "Email",
                     controller:
                         Provider.of<LoginProvider>(context).emailController,
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 12,
                   ),
                   CustomTextfield(
-                    hintText: "Password",
+                    lableText: "Password",
                     isObsecure: true,
                     controller:
                         Provider.of<LoginProvider>(context).passwordController,
                   ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  CustomDropdownLogin(),
                   const SizedBox(
                     height: 16,
                   ),

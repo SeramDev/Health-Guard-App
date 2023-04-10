@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:health_guard/components/custom_dropdown_signup.dart';
 import 'package:health_guard/screens/auth/login.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_button.dart';
@@ -54,29 +55,33 @@ class _SignUpState extends State<SignUp> {
                     height: 20,
                   ),
                   CustomTextfield(
-                    hintText: "Name",
+                    lableText: "Name",
                     //don't add (context, listen: false) when calling provider methods for property values.
                     //add (listen: false) only when calling provider methods within a function.
                     controller:
                         Provider.of<SignUpProvider>(context).nameController,
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 14,
                   ),
                   CustomTextfield(
-                    hintText: "Email",
+                    lableText: "Email",
                     controller:
                         Provider.of<SignUpProvider>(context).emailController,
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 14,
                   ),
                   CustomTextfield(
-                    hintText: "Password",
+                    lableText: "Password",
                     isObsecure: true,
                     controller:
                         Provider.of<SignUpProvider>(context).passwordController,
                   ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  CustomDropdownSignUp(),
                   const SizedBox(
                     height: 16,
                   ),
