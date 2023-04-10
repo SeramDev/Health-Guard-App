@@ -4,12 +4,12 @@ import '../utils/app_colors.dart';
 class CustomTextfield extends StatelessWidget {
   const CustomTextfield({
     Key? key,
-    required this.hintText,
+    required this.lableText,
     this.isObsecure = false,
     required this.controller,
   }) : super(key: key);
 
-  final String hintText;
+  final String lableText;
   final bool isObsecure;
   final TextEditingController controller;
 
@@ -31,15 +31,15 @@ class CustomTextfield extends StatelessWidget {
         controller: controller,
         obscureText: isObsecure,
         decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: AppColors.kAsh),
+          labelText: lableText,
+          labelStyle: const TextStyle(color: AppColors.kAsh),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2),
             borderSide: const BorderSide(color: AppColors.kWhite),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2),
-            borderSide: const BorderSide(color: AppColors.primaryRed),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
           ),
         ),
       ),

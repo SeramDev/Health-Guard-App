@@ -66,7 +66,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     height: 16,
                   ),
                   CustomTextfield(
-                    hintText: "Email",
+                    lableText: "Email",
                     controller: emailController,
                   ),
                   const SizedBox(

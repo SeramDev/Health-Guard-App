@@ -15,6 +15,11 @@ class LoginProvider extends ChangeNotifier {
   //---------get password controller
   TextEditingController get passwordController => _passwordController;
 
+  //---------dropdown controller
+  String _dropdownController = "User";
+  //---------get dropdown controller
+  String get dropdownController => _dropdownController;
+
   //---------store loading state
   bool _isLoading = false;
   //---------get loading state
@@ -23,6 +28,12 @@ class LoginProvider extends ChangeNotifier {
   //---------change loading state
   void setLoading(bool val) {
     _isLoading = val;
+    notifyListeners();
+  }
+
+  //---------store selected dropdown option
+  void setSelectedOption(String val) {
+    _dropdownController = val;
     notifyListeners();
   }
 
@@ -62,6 +73,8 @@ class LoginProvider extends ChangeNotifier {
 
         //------stop the loader
         setLoading(false);
+
+        Logger().i(_dropdownController);
       }
     } catch (e) {
       setLoading(false);

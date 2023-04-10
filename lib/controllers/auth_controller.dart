@@ -10,7 +10,6 @@ import '../utils/alert_helper.dart';
 import '../utils/assets_constants.dart';
 import 'file_upload_controller.dart';
 
-
 class AuthController {
   //------------firebase auth instance
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -24,6 +23,7 @@ class AuthController {
     String email,
     String password,
     String name,
+    String role,
   ) async {
     try {
       //---------send email and password to the firebase and create a user
@@ -41,6 +41,7 @@ class AuthController {
               value.user!.uid,
               name,
               email,
+              role,
               AssetConstants.profileImgUrl,
             ),
           );

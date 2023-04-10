@@ -5,9 +5,10 @@ class UserModel {
   String uid;
   String name;
   String email;
+  String role;
   String img;
 
-  UserModel(this.uid, this.name, this.email, this.img);
+  UserModel(this.uid, this.name, this.email, this.role, this.img);
 
   //---------bind json data to user model
   factory UserModel.fromJson(Map<String, dynamic> json) =>

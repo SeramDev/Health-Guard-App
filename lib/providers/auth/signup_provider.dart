@@ -20,6 +20,11 @@ class SignUpProvider extends ChangeNotifier {
   //---------get name controller
   TextEditingController get nameController => _nameController;
 
+  //---------dropdown controller
+  String _dropdownController = "User";
+  //---------get dropdown controller
+  String get dropdownController => _dropdownController;
+
   //---------store loading state
   bool _isLoading = false;
   //---------get loading state
@@ -28,6 +33,12 @@ class SignUpProvider extends ChangeNotifier {
   //---------change loading state
   void setLoading(bool val) {
     _isLoading = val;
+    notifyListeners();
+  }
+
+  //---------store selected dropdown option
+  void setSelectedOption(String val) {
+    _dropdownController = val;
     notifyListeners();
   }
 
@@ -65,6 +76,7 @@ class SignUpProvider extends ChangeNotifier {
           _emailController.text,
           _passwordController.text,
           _nameController.text,
+          _dropdownController
         );
 
         //------clear textfields
