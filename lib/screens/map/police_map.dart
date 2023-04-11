@@ -135,7 +135,7 @@ class _MapSectionState extends State<MapSection> {
     //
     return GoogleMap(
       zoomControlsEnabled: false,
-      trafficEnabled: true,
+      trafficEnabled: false,
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
           target: accidentLocation, //accident loc
