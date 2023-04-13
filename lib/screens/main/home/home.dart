@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:health_guard/components/blood_pressure_card.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/screens/alert/alert.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
+import '../../../components/card_collection.dart';
 import '../../../components/custom_text.dart';
 import '../../../components/sensor_data_card.dart';
 import '../../../controllers/auth_controller.dart';
@@ -74,16 +76,37 @@ class _HomeState extends State<Home> {
                 height: 30,
               ),
               Expanded(
-                child: GridView.builder(
-                  itemCount: 4,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.25,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                  ),
-                  itemBuilder: (context, index) {
-                    return SensorDataCard(index: index);
+                child: Consumer<SensorDataProvider>(
+                  builder: (context, value, child) {
+                    return CardCollection(
+                      cards: [
+                        SensorDataCard(
+                          title: "Heart Rate",
+                          image_path: AssetConstants.heartRateIcon,
+                          value: value.sensorDataModel?.heartRate,
+                          isLoading: value.isLoading,
+                        ),
+                        SensorDataCard(
+                          title: "SpO2",
+                          image_path: AssetConstants.spo2Icon,
+                          value: value.sensorDataModel?.oxygenSaturation,
+                          isLoading: value.isLoading,
+                        ),
+                        SensorDataCard(
+                          title: "Temperature",
+                          image_path: AssetConstants.temperatureIcon,
+                          value: value.sensorDataModel?.temperature,
+                          isLoading: value.isLoading,
+                        ),
+                        BloodPressureCard(
+                          title: "Blood Pressure",
+                          image_path: AssetConstants.bloodPressureIcon,
+                          sbp: value.sensorDataModel?.systolicBloodPressure,
+                          dbp: value.sensorDataModel?.diastolicBloodPressure,
+                          isLoading: value.isLoading,
+                        ),
+                      ],
+                    );
                   },
                 ),
               ),
@@ -117,7 +140,9 @@ class _HomeState extends State<Home> {
                             color: AppColors.kWhite,
                           )
                         : CustomText(
-                            value.sensorDataModel.status,
+                            (value.sensorDataModel?.status == null)
+                                ? ""
+                                : "${value.sensorDataModel?.status}",
                             fontSize: 30,
                             color: AppColors.kWhite,
                           );

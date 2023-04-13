@@ -14,5 +14,9 @@ class AssetConstants {
   static const homeIcon = "${iconPath}home-icon.svg";
   static const profileIcon = "${iconPath}profile-icon.svg";
   static const menuIcon = "${iconPath}menu-icon.svg";
+  static const heartRateIcon = "${imagePath}heart_rate.png";
+  static const spo2Icon = "${imagePath}spo2.png";
+  static const temperatureIcon = "${imagePath}temperature.png";
+  static const bloodPressureIcon = "${imagePath}blood_pressure.png";
   // static const backBtnIcon = "${iconPath}back-btn.svg";
 }
