@@ -23,6 +23,7 @@ class CustomText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
       style: GoogleFonts.montserrat(
         fontSize: fontSize,
         fontWeight: fontWeight,

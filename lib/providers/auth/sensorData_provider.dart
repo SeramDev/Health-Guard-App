@@ -5,9 +5,9 @@ import '../../controllers/sensorData_controller.dart';
 
 class SensorDataProvider extends ChangeNotifier {
   //---------local sensorData model
-  late SensorDataModel _sensorDataModel;
+  SensorDataModel? _sensorDataModel;
   //---------get sensorData model
-  SensorDataModel get sensorDataModel => _sensorDataModel;
+  SensorDataModel? get sensorDataModel => _sensorDataModel;
 
   //---------store loading state
   bool _isLoading = false;

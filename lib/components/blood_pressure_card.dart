@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_text.dart';
 import '../utils/app_colors.dart';
 
-class SensorDataCard extends StatefulWidget {
-  const SensorDataCard({
+class BloodPressureCard extends StatefulWidget {
+  const BloodPressureCard({
     Key? key,
     required this.title,
     required this.image_path,
-    required this.value,
+    required this.sbp,
+    required this.dbp,
     required this.isLoading,
   }) : super(key: key);
 
   final String title;
   final String image_path;
-  final double? value;
+  final double? sbp;
+  final double? dbp;
   final bool isLoading;
 
   @override
-  State<SensorDataCard> createState() => _SensorDataCardState();
+  State<BloodPressureCard> createState() => _BloodPressureCardState();
 }
 
-class _SensorDataCardState extends State<SensorDataCard> {
+class _BloodPressureCardState extends State<BloodPressureCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +66,7 @@ class _SensorDataCardState extends State<SensorDataCard> {
                       color: AppColors.primaryColor,
                     )
                   : CustomText(
-                      widget.value!.toInt().toString(),
+                      "${widget.sbp!.toInt().toString()}/${widget.dbp!.toInt().toString()}",
                       fontSize: 30,
                     ),
             ],
