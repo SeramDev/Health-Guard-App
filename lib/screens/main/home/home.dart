@@ -1,19 +1,15 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_guard/components/blood_pressure_card.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/screens/alert/alert.dart';
-import 'package:health_guard/utils/alert_helper.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
 import '../../../components/card_collection.dart';
 import '../../../components/custom_text.dart';
 import '../../../components/sensor_data_card.dart';
-import '../../../controllers/auth_controller.dart';
 import '../../../providers/auth/sensorData_provider.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
@@ -54,34 +50,8 @@ class _HomeState extends State<Home> {
           ),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset(
-                    AssetConstants.menuIcon,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.logout),
-                    onPressed: () {
-                      AlertHelper.showAlert(
-                        context,
-                        DialogType.QUESTION,
-                        "Logout",
-                        "Are you sure want to Logout?",
-                        /*() {
-                          AuthController().logOut();
-                          UtilFunctions.navigateTo(context, const Login());
-                          if (kDebugMode) {
-                            print("logout Executed.................");
-                          }
-                        }*/
-                        () {
-                          AuthController().logOut(context);
-                        },
-                      );
-                    },
-                  ),
-                ],
+              const SizedBox(
+                height: 25,
               ),
               const CustomText(
                 "Dashboard",
