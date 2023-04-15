@@ -66,12 +66,16 @@ class _HomeState extends State<Home> {
                     icon: const Icon(Icons.logout),
                     onPressed: () {
                       AlertHelper.showAlert(context, DialogType.QUESTION,
-                          "Logout", "Are you sure want to Logout", () {
-                        AuthController().logOut();
-                        UtilFunctions.navigateTo(context, const Login());
-                        if (kDebugMode) {
-                          print("logout Executed.................");
-                        }
+                          "Logout", "Are you sure want to Logout",
+                          /*() {
+                          AuthController().logOut();
+                          UtilFunctions.navigateTo(context, const Login());
+                          if (kDebugMode) {
+                            print("logout Executed.................");
+                          }
+                        }*/
+                          () {
+                        AuthController().logOut(context);
                       });
                     },
                   ),

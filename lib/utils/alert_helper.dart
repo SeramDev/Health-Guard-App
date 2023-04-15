@@ -9,7 +9,7 @@ class AlertHelper {
    */
   static void showAlert(
       BuildContext context, DialogType dialogType, String title, String desc,
-      [Function()? p]) {
+      [Function()? pressOK]) {
     AwesomeDialog(
         context: context,
         dialogType: dialogType,
@@ -17,11 +17,12 @@ class AlertHelper {
         title: title,
         desc: desc,
         btnCancelOnPress: () {},
-        btnOkOnPress: () {
+        btnOkOnPress: pressOK,
+        /*() {
           if (p != null) {
             p();
           }
-        }
-        ).show();
+        }*/
+    ).show();
   }
 }
