@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_guard/components/blood_pressure_card.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/screens/alert/alert.dart';
-import 'package:health_guard/screens/auth/login.dart';
 import 'package:health_guard/utils/alert_helper.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
@@ -65,18 +63,22 @@ class _HomeState extends State<Home> {
                   IconButton(
                     icon: const Icon(Icons.logout),
                     onPressed: () {
-                      AlertHelper.showAlert(context, DialogType.QUESTION,
-                          "Logout", "Are you sure want to Logout",
-                          /*() {
+                      AlertHelper.showAlert(
+                        context,
+                        DialogType.QUESTION,
+                        "Logout",
+                        "Are you sure want to Logout?",
+                        /*() {
                           AuthController().logOut();
                           UtilFunctions.navigateTo(context, const Login());
                           if (kDebugMode) {
                             print("logout Executed.................");
                           }
                         }*/
-                          () {
-                        AuthController().logOut(context);
-                      });
+                        () {
+                          AuthController().logOut(context);
+                        },
+                      );
                     },
                   ),
                 ],

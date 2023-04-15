@@ -64,7 +64,7 @@ class UserProvider extends ChangeNotifier {
         Provider.of<SensorDataProvider>(context, listen: false)
             .fetchSensorData();
         // ignore: use_build_context_synchronously
-        UtilFunctions.navigateTo(context, const MainScreen());
+        UtilFunctions.navigateToForwardOnly(context, const MainScreen());
       }
     });
   }
