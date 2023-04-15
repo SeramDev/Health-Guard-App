@@ -1,8 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_guard/screens/main/home/home.dart';
 import 'package:health_guard/screens/main/profile/profile.dart';
 import 'package:health_guard/utils/app_colors.dart';
+import '../../controllers/auth_controller.dart';
+import '../../utils/alert_helper.dart';
 import '../../utils/assets_constants.dart';
 
 class MainScreen extends StatefulWidget {
@@ -38,34 +42,50 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[activeIndex],
-      bottomNavigationBar: SizedBox(
-        height: 83,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-              child: SvgPicture.asset(
-                AssetConstants.homeIcon,
-                color:
-                    activeIndex == 0 ? AppColors.primaryColor : AppColors.kAsh,
+    return WillPopScope(
+      onWillPop: () async {
+        AlertHelper.showAlert(
+          context,
+          DialogType.QUESTION,
+          "Exit",
+          "Are you sure want to close the application?",
+          () {
+            SystemNavigator.pop();
+          },
+        );
+        return false;
+      },
+      child: Scaffold(
+        body: _screens[activeIndex],
+        bottomNavigationBar: SizedBox(
+          height: 83,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                child: SvgPicture.asset(
+                  AssetConstants.homeIcon,
+                  color: activeIndex == 0
+                      ? AppColors.primaryColor
+                      : AppColors.kAsh,
+                ),
+                onTap: () {
+                  onItemTapped(0);
+                },
               ),
-              onTap: () {
-                onItemTapped(0);
-              },
-            ),
-            InkWell(
-              child: SvgPicture.asset(
-                AssetConstants.profileIcon,
-                color:
-                    activeIndex == 1 ? AppColors.primaryColor : AppColors.kAsh,
+              InkWell(
+                child: SvgPicture.asset(
+                  AssetConstants.profileIcon,
+                  color: activeIndex == 1
+                      ? AppColors.primaryColor
+                      : AppColors.kAsh,
+                ),
+                onTap: () {
+                  onItemTapped(1);
+                },
               ),
-              onTap: () {
-                onItemTapped(1);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
