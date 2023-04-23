@@ -43,113 +43,115 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: FadeInRight(
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 25,
-              ),
-              const CustomText(
-                "Dashboard",
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Expanded(
-                child: Consumer<SensorDataProvider>(
-                  builder: (context, value, child) {
-                    return CardCollection(
-                      cards: [
-                        SensorDataCard(
-                          title: "Heart Rate",
-                          image_path: AssetConstants.heartRateIcon,
-                          value: value.sensorDataModel?.heartRate,
-                          isLoading: value.isLoading,
-                        ),
-                        SensorDataCard(
-                          title: "SpO2",
-                          image_path: AssetConstants.spo2Icon,
-                          value: value.sensorDataModel?.oxygenSaturation,
-                          isLoading: value.isLoading,
-                        ),
-                        SensorDataCard(
-                          title: "Temperature",
-                          image_path: AssetConstants.temperatureIcon,
-                          value: value.sensorDataModel?.temperature,
-                          isLoading: value.isLoading,
-                        ),
-                        BloodPressureCard(
-                          title: "Blood Pressure",
-                          image_path: AssetConstants.bloodPressureIcon,
-                          sbp: value.sensorDataModel?.systolicBloodPressure,
-                          dbp: value.sensorDataModel?.diastolicBloodPressure,
-                          isLoading: value.isLoading,
-                        ),
-                      ],
-                    );
-                  },
+      child: Scaffold(
+        body: FadeInRight(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 25,
                 ),
-              ),
-              const CustomText(
-                "Status",
-                fontSize: 25,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
+                const CustomText(
+                  "Dashboard",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 10),
-                      blurRadius: 20,
-                      color: AppColors.kAsh.withOpacity(.4),
-                    )
-                  ],
                 ),
-                child: Consumer<SensorDataProvider>(
-                  builder: (context, value, child) {
-                    return value.isLoading == true
-                        ? const CircularProgressIndicator(
-                            color: AppColors.kWhite,
-                          )
-                        : CustomText(
-                            (value.sensorDataModel?.status == null)
-                                ? ""
-                                : "${value.sensorDataModel?.status}",
-                            fontSize: 30,
-                            color: AppColors.kWhite,
-                          );
+                const SizedBox(
+                  height: 30,
+                ),
+                Expanded(
+                  child: Consumer<SensorDataProvider>(
+                    builder: (context, value, child) {
+                      return CardCollection(
+                        cards: [
+                          SensorDataCard(
+                            title: "Heart Rate",
+                            image_path: AssetConstants.heartRateIcon,
+                            value: value.sensorDataModel?.heartRate,
+                            isLoading: value.isLoading,
+                          ),
+                          SensorDataCard(
+                            title: "SpO2",
+                            image_path: AssetConstants.spo2Icon,
+                            value: value.sensorDataModel?.oxygenSaturation,
+                            isLoading: value.isLoading,
+                          ),
+                          SensorDataCard(
+                            title: "Temperature",
+                            image_path: AssetConstants.temperatureIcon,
+                            value: value.sensorDataModel?.temperature,
+                            isLoading: value.isLoading,
+                          ),
+                          BloodPressureCard(
+                            title: "Blood Pressure",
+                            image_path: AssetConstants.bloodPressureIcon,
+                            sbp: value.sensorDataModel?.systolicBloodPressure,
+                            dbp: value.sensorDataModel?.diastolicBloodPressure,
+                            isLoading: value.isLoading,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                const CustomText(
+                  "Status",
+                  fontSize: 25,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: const Offset(0, 10),
+                        blurRadius: 20,
+                        color: AppColors.kAsh.withOpacity(.4),
+                      )
+                    ],
+                  ),
+                  child: Consumer<SensorDataProvider>(
+                    builder: (context, value, child) {
+                      return value.isLoading == true
+                          ? const CircularProgressIndicator(
+                              color: AppColors.kWhite,
+                            )
+                          : CustomText(
+                              (value.sensorDataModel?.status == null)
+                                  ? ""
+                                  : "${value.sensorDataModel?.status}",
+                              fontSize: 30,
+                              color: AppColors.kWhite,
+                            );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  text: "Show Alert",
+                  onTap: () {
+                    UtilFunctions.navigateTo(context, const AlertScreen());
                   },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomButton(
-                text: "Show Alert",
-                onTap: () {
-                  UtilFunctions.navigateTo(context, const AlertScreen());
-                },
-                fontsize: 20,
-                height: 42,
-                width: 200,
-                radius: 50,
-              )
-            ],
+                  fontsize: 20,
+                  height: 42,
+                  width: 200,
+                  radius: 50,
+                )
+              ],
+            ),
           ),
         ),
       ),

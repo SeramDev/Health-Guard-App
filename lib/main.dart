@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'firebase_options.dart';
+import 'screens/main/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //For testing Hard coded the screen
-      home:  const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+      home:  Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,
