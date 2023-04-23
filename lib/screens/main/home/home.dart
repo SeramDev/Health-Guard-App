@@ -171,14 +171,13 @@ class _HomeState extends State<Home> {
     String? status = context.read<SensorDataProvider>().sensorDataModel?.status;
     if (status != null) {
       if (status == "Abnormal") {
-        await Future.microtask(() => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return AlertScreen();
-                },
-              ),
-            ));
+        await Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (BuildContext context) {
+              return AlertScreen();
+            },
+          ));
+        });
       }
     }
     return "Ok";
