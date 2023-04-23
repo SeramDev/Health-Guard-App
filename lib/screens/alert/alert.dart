@@ -122,7 +122,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 fontWeight: FontWeight.bold,
               ),
               onDone: () {
-                UtilFunctions.navigateTo(context, const MapScreen());
+                UtilFunctions.navigateTo(context, const UserMapScreen());
               },
               shouldShowDays: (e) {
                 return false;
