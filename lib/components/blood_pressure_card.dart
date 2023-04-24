@@ -66,7 +66,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
                       color: AppColors.primaryColor,
                     )
                   : CustomText(
-                      "${widget.sbp!.toInt().toString()}/${widget.dbp!.toInt().toString()}",
+                      "${widget.sbp?.toInt().toString() ?? ""}/${widget.dbp?.toInt().toString() ?? ""}",
                       fontSize: 30,
                     ),
             ],

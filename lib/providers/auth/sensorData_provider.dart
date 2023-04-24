@@ -22,24 +22,37 @@ class SensorDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //---------fetch sensor data
-  Future<void> fetchSensorData() async {
-    //print("FetchSensorData called<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //! Local States used to implement AlertCancel
+  int alertDelay = 0;
+  int noOfCancells = 0;
+  int totalRepetitionTime = 0;
+
+  ///===========================================================================
+  ///===========================================================================
+  /*
+  *----------------   fetchSensorDataOnStartup  -------------------
+  * This method only calls one-time (On app startup only)
+  * This method runs repeatedly on startup until status = "Abnormal"
+   */
+  Future<void> fetchSensorData(Function showAlertCallback) async {
+    print(
+        "fetchSensorDataOnStartup --------------------------------------------");
     /*
     <<Sachin fetchData() and called notifyListeners()
     */
     try {
       //start the loader
-      setLoading(true);
+      // here microtask used to avoid calling notifiListner() on widget building
+      await Future.microtask(() {
+        setLoading(true);
+      });
 
       await SensorDataController().fetchData().then((value) {
         _sensorDataModel = value;
-
-        notifyListeners();
-
         //stop the loader
         setLoading(false);
-      });
+        notifyListeners();
+      }); //.timeout(const Duration(seconds: 5));
     } catch (e) {
       Logger().e(e);
     }
@@ -47,12 +60,48 @@ class SensorDataProvider extends ChangeNotifier {
     /*
     <<The Repeater>>
     */
+
     if (_sensorDataModel?.status != null) {
-      if (_sensorDataModel?.status != "Abnormal") {
-        Future.delayed(const Duration(seconds: 15), () {
-          fetchSensorData();
+      if (_sensorDataModel?.status == "Abnormal") {
+        if (noOfCancells == 0) {
+          showAlertCallback();
+        } else {
+          if (totalRepetitionTime > alertDelay) {
+            showAlertCallback();
+            totalRepetitionTime = 0;
+          } else {
+            await Future.delayed(const Duration(seconds: 15), () {
+              totalRepetitionTime =
+                  totalRepetitionTime + 15; // 15 <- is delay time for request
+            });
+            fetchSensorData(showAlertCallback);
+          }
+        }
+      } else {
+        await Future.delayed(const Duration(seconds: 15), () {
+          fetchSensorData(showAlertCallback);
         });
       }
+    }
+  }
+
+  ///===========================================================================
+  ///===========================================================================
+  /*
+   *  This method called when AlertScreen's cancel button was clicked
+   */
+
+  Future<void> fetchSensorDataOnAlertCancel(Function showAlertCallback) async {
+    noOfCancells++;
+    if (noOfCancells == 1) {
+      alertDelay = 15;
+      fetchSensorData(showAlertCallback);
+    } else if (noOfCancells == 2) {
+      alertDelay = 30;
+      fetchSensorData(showAlertCallback);
+    } else if (noOfCancells == 3) {
+      alertDelay = 60;
+      fetchSensorData(showAlertCallback);
     }
   }
 }

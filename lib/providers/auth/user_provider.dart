@@ -61,8 +61,9 @@ class UserProvider extends ChangeNotifier {
         await fetchUser(user.uid);
 
         // ignore: use_build_context_synchronously
-        Provider.of<SensorDataProvider>(context, listen: false)
-            .fetchSensorData();
+        //! I think this unwanted, bcz this called by Homescreen's initState()
+        /*Provider.of<SensorDataProvider>(context, listen: false)
+            .fetchSensorData();*/
         // ignore: use_build_context_synchronously
         UtilFunctions.navigateToForwardOnly(context, const MainScreen());
       }
