@@ -9,6 +9,8 @@ part of objects;
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       json['uid'] as String,
       json['name'] as String,
+      json['age'] as int,
+      json['gender'] as String,
       json['email'] as String,
       json['role'] as String,
       json['img'] as String,
@@ -17,6 +19,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
+      'age': instance.age,
+      'gender': instance.gender,
       'email': instance.email,
       'role': instance.role,
       'img': instance.img,

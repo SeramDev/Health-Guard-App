@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:health_guard/components/custom_dropdown.dart';
 import 'package:health_guard/components/custom_dropdown_signup.dart';
 import 'package:health_guard/screens/auth/login.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,7 @@ class _SignUpState extends State<SignUp> {
                     color: AppColors.primaryColor,
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
                   Image.asset(
                     AssetConstants.logo,
@@ -54,6 +55,10 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(
                     height: 20,
                   ),
+                  CustomDropdownSignUp(),
+                  const SizedBox(
+                    height: 14,
+                  ),
                   CustomTextfield(
                     lableText: "Name",
                     //don't add (context, listen: false) when calling provider methods for property values.
@@ -61,6 +66,18 @@ class _SignUpState extends State<SignUp> {
                     controller:
                         Provider.of<SignUpProvider>(context).nameController,
                   ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  CustomTextfield(
+                    lableText: "Age",
+                    controller:
+                        Provider.of<SignUpProvider>(context).ageController,
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  CustomDropdown(),
                   const SizedBox(
                     height: 14,
                   ),
@@ -81,7 +98,6 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(
                     height: 14,
                   ),
-                  CustomDropdownSignUp(),
                   const SizedBox(
                     height: 16,
                   ),

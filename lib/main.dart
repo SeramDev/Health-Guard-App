@@ -4,8 +4,6 @@ import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/auth/sensorData_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
-import 'package:health_guard/screens/alert/alert.dart';
-import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/screens/map/map_model.dart';
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'health_guard',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
