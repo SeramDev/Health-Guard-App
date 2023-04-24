@@ -4,11 +4,13 @@ part of "objects.dart";
 class UserModel {
   String uid;
   String name;
+  int age;
+  String gender;
   String email;
   String role;
   String img;
 
-  UserModel(this.uid, this.name, this.email, this.role, this.img);
+  UserModel(this.uid, this.name, this.age, this.gender, this.email, this.role, this.img);
 
   //---------bind json data to user model
   factory UserModel.fromJson(Map<String, dynamic> json) =>

@@ -3,12 +3,12 @@ import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_colors.dart';
 
-class CustomDropdownSignUp extends StatelessWidget {
-  CustomDropdownSignUp({
+class CustomDropdown extends StatelessWidget {
+  CustomDropdown({
     Key? key,
   }) : super(key: key);
 
-  final List<String> userRoleList = ["User", "Police Station", "Ambulance"];
+  final List<String> genderList = ["Male", "Female"];
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +27,22 @@ class CustomDropdownSignUp extends StatelessWidget {
       child: Consumer<SignUpProvider>(
         builder: (context, value, child) {
           return DropdownButtonFormField(
-            value: value.roleController,
-            items: userRoleList
+            value: value.genderController,
+            items: genderList
                 .map((e) => DropdownMenuItem(
                       value: e,
                       child: Text(e),
                     ))
                 .toList(),
             onChanged: (val) {
-              value.setSelectedOption(val as String);
+              value.setSelectedGender(val as String);
             },
             icon: const Icon(
               Icons.arrow_drop_down_sharp,
               color: AppColors.primaryColor,
             ),
             decoration: InputDecoration(
-              labelText: "Role",
+              labelText: "Gender",
               labelStyle: const TextStyle(color: AppColors.kAsh),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(2),

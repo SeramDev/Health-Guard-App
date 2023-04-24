@@ -10,6 +10,11 @@ class SignUpProvider extends ChangeNotifier {
   //---------get email controller
   TextEditingController get emailController => _emailController;
 
+  //---------email controller
+  final _ageController = TextEditingController();
+  //---------get email controller
+  TextEditingController get ageController => _ageController;
+
   //---------password controller
   final _passwordController = TextEditingController();
   //---------get password controller
@@ -20,10 +25,15 @@ class SignUpProvider extends ChangeNotifier {
   //---------get name controller
   TextEditingController get nameController => _nameController;
 
-  //---------dropdown controller
-  String _dropdownController = "User";
+  //---------role dropdown controller
+  String _roleController = "User";
   //---------get dropdown controller
-  String get dropdownController => _dropdownController;
+  String get roleController => _roleController;
+
+  //---------gender dropdown controller
+  String _genderController = "Male";
+  //---------get dropdown controller
+  String get genderController => _genderController;
 
   //---------store loading state
   bool _isLoading = false;
@@ -38,7 +48,13 @@ class SignUpProvider extends ChangeNotifier {
 
   //---------store selected dropdown option
   void setSelectedOption(String val) {
-    _dropdownController = val;
+    _roleController = val;
+    notifyListeners();
+  }
+
+  //---------store selected gender
+  void setSelectedGender(String val) {
+    _genderController = val;
     notifyListeners();
   }
 
@@ -47,7 +63,8 @@ class SignUpProvider extends ChangeNotifier {
     //-------first checking all the textfields are empty or not
     if (_emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
-        _nameController.text.isEmpty) {
+        _nameController.text.isEmpty ||
+        _ageController.text.isEmpty) {
       AlertHelper.showAlert(
           context, DialogType.ERROR, "ERROR", "Please fill all the fields");
       return false;
@@ -72,17 +89,19 @@ class SignUpProvider extends ChangeNotifier {
         setLoading(true);
 
         await AuthController().registerUser(
-          context,
-          _emailController.text,
-          _passwordController.text,
-          _nameController.text,
-          _dropdownController
-        );
+            context,
+            _emailController.text,
+            _passwordController.text,
+            _nameController.text,
+            int.parse(_ageController.text),
+            _genderController,
+            _roleController);
 
         //------clear textfields
         _emailController.clear();
         _passwordController.clear();
         _nameController.clear();
+        _ageController.clear;
 
         //------stop the loader
         setLoading(false);

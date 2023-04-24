@@ -8,7 +8,6 @@ import 'package:health_guard/screens/auth/login.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:logger/logger.dart';
 import '../models/objects.dart';
-import '../screens/alert/alert.dart';
 import '../utils/alert_helper.dart';
 import '../utils/assets_constants.dart';
 import 'file_upload_controller.dart';
@@ -26,6 +25,8 @@ class AuthController {
     String email,
     String password,
     String name,
+    int age,
+    String gender,
     String role,
   ) async {
     try {
@@ -43,6 +44,8 @@ class AuthController {
             UserModel(
               value.user!.uid,
               name,
+              age,
+              gender,
               email,
               role,
               AssetConstants.profileImgUrl,
