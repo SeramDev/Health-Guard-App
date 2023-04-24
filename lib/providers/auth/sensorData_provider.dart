@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:health_guard/models/objects.dart';
 import 'package:logger/logger.dart';
@@ -22,23 +24,35 @@ class SensorDataProvider extends ChangeNotifier {
 
   //---------fetch sensor data
   Future<void> fetchSensorData() async {
+    //print("FetchSensorData called<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    /*
+    <<Sachin fetchData() and called notifyListeners()
+    */
     try {
-      //---------start the loader
+      //start the loader
       setLoading(true);
 
       await SensorDataController().fetchData().then((value) {
         _sensorDataModel = value;
 
-        //Logger().i(_sensorDataModel.toJson());
-
-        //---------calling this to notify that usermodel has been set
         notifyListeners();
 
-        //---------stop the loader
+        //stop the loader
         setLoading(false);
       });
     } catch (e) {
       Logger().e(e);
+    }
+
+    /*
+    <<The Repeater>>
+    */
+    if (_sensorDataModel?.status != null) {
+      if (_sensorDataModel?.status != "Abnormal") {
+        Future.delayed(const Duration(seconds: 15), () {
+          fetchSensorData();
+        });
+      }
     }
   }
 }
