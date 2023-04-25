@@ -64,7 +64,7 @@ class _SensorDataCardState extends State<SensorDataCard> {
                       color: AppColors.primaryColor,
                     )
                   : CustomText(
-                      widget.value!.toInt().toString(),
+                      widget.value?.toInt().toString() ?? "",
                       fontSize: 30,
                     ),
             ],

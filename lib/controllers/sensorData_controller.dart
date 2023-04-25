@@ -16,5 +16,10 @@ class SensorDataController {
     } else {
       throw Exception('Failed to load user data');
     }
+
+    /*
+    await Future.delayed(const Duration(seconds: 2));
+    return SensorDataModel(1, 1, 1, 1, 1, 1, 1, "Abnormal");
+    */
   }
 }

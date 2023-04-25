@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
+import 'package:health_guard/providers/auth/sensorData_provider.dart';
+import 'package:health_guard/screens/main/home/home.dart';
 import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 class AlertScreen extends StatefulWidget {
-  const AlertScreen({super.key});
+  const AlertScreen({super.key, required this.showAlertCallback});
+  final Function showAlertCallback;
 
   @override
   State<AlertScreen> createState() => _AlertScreenState();
@@ -122,7 +126,14 @@ class _AlertScreenState extends State<AlertScreen> {
                 fontWeight: FontWeight.bold,
               ),
               onDone: () {
-                UtilFunctions.navigateTo(context, const UserMapScreen());
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return UserMapScreen();
+                  },
+                ));
+                //UtilFunctions.navigateTo(context, const UserMapScreen());
               },
               shouldShowDays: (e) {
                 return false;
@@ -148,6 +159,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     text: "CANCEL",
                     onTap: () {
                       UtilFunctions.navigateToBackward(context);
+                      context
+                          .read<SensorDataProvider>()
+                          .fetchSensorDataOnAlertCancel(
+                              widget.showAlertCallback);
                     },
                     width: 158,
                     height: 43,

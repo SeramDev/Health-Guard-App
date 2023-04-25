@@ -24,27 +24,34 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //late Timer _timer;
 
-  /*@override
+  @override
   void initState() {
+    print("InitState called ----------------------------------------------------");
     super.initState();
-    _timer = Timer.periodic(
-      const Duration(seconds: 15),
-      (_) => Provider.of<SensorDataProvider>(context, listen: false)
-          .fetchSensorData(),
-    );
+    context
+        .read<SensorDataProvider>()
+        .fetchSensorData(showAlertCallback);
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
+  /*
+  *
+  This method is used by SensorDataProvider as a callback
+   */
+  void showAlertCallback() async {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (BuildContext context) {
+        return AlertScreen(
+          showAlertCallback: showAlertCallback,
+        );
+      },
+    ));
   }
-  */
 
   @override
   Widget build(BuildContext context) {
+    //! Run only one time
     return FutureBuilder(
-      future: context.read<SensorDataProvider>().fetchSensorData(),
+      //future: context.read<SensorDataProvider>().fetchSensorData(),
       builder: (context, snapshot) => SafeArea(
         child: Scaffold(
           body: FadeInRight(
@@ -69,7 +76,11 @@ class _HomeState extends State<Home> {
                   Expanded(
                     child: Consumer<SensorDataProvider>(
                       builder: (context, value, child) {
-                        showAlertOrNot(context);
+                        //!  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                        //!  <<<<<<<<<<<<<<<<<<<Very Bad (Totaly Unexpected Behaviousrs)<<<<<>>>>>>>>>>>>
+                        //!  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                        //showAlertOrNot(context);
+                        //!  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                         return CardCollection(
                           cards: [
                             SensorDataCard(
@@ -94,7 +105,8 @@ class _HomeState extends State<Home> {
                               title: "Blood Pressure",
                               image_path: AssetConstants.bloodPressureIcon,
                               sbp: value.sensorDataModel?.systolicBloodPressure,
-                              dbp: value.sensorDataModel?.diastolicBloodPressure,
+                              dbp:
+                                  value.sensorDataModel?.diastolicBloodPressure,
                               isLoading: value.isLoading,
                             ),
                           ],
@@ -144,16 +156,6 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 20,
                   ),
-                  /*CustomButton(
-                      text: "Show Alert",
-                      onTap: () {
-                        UtilFunctions.navigateTo(context, const AlertScreen());
-                      },
-                      fontsize: 20,
-                      height: 42,
-                      width: 200,
-                      radius: 50,
-                    )*/
                 ],
               ),
             ),
@@ -161,26 +163,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-  }
-
-  /*
-  If the status  = "Abnormal" , 
-  then automatically naviagtes to the AlertScreen (countdown screen)
-  else, stay here (Not navigated)
-   */
-  Future<String> showAlertOrNot(BuildContext context) async {
-    String? status = context.read<SensorDataProvider>().sensorDataModel?.status;
-    if (status != null) {
-      if (status == "Abnormal") {
-        await Future.delayed(const Duration(seconds: 2), () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (BuildContext context) {
-              return AlertScreen();
-            },
-          ));
-        });
-      }
-    }
-    return "Ok";
   }
 }
