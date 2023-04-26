@@ -19,7 +19,7 @@ Implement updating accident location using sensorData provider
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:health_guard/models/objects.dart';
-import 'package:health_guard/providers/auth/sensorData_provider.dart';
+import 'package:health_guard/providers/sensorData_provider.dart';
 import 'package:health_guard/screens/map/map_model.dart';
 import 'package:provider/provider.dart';
 
