@@ -62,6 +62,7 @@ class SensorDataProvider extends ChangeNotifier {
     /*
     Part 01 - FetchData() and called notifyListeners()
     */
+    SensorDataModel result;
     try {
       //start the loader
       // here microtask used to avoid calling notifiListner() on widget building and avoid markNeedsToRebuilt error
@@ -69,12 +70,12 @@ class SensorDataProvider extends ChangeNotifier {
         setLoading(true);
       });
 
-      await SensorDataController().fetchData().then((value) {
-        _sensorDataModel = value;
+      result = await SensorDataController().fetchData(); //.then((value) {
+      _sensorDataModel = result;
         //stop the loader
-        setLoading(false);
-        notifyListeners();
-      });
+      setLoading(false);
+      notifyListeners();
+      //});
     } catch (e) {
       Logger().e(e);
       if (kDebugMode) {
