@@ -1,25 +1,40 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import '../models/objects.dart';
 
 class SensorDataController {
-  final endpointUrl = "http://10.0.2.2:5000/fetch-user-status?uid=123";
+  final endpointUrl = "http://13.50.246.130/fetch-user-status?uid=123";
 
   Future<SensorDataModel> fetchData() async {
-    Response res = await get(Uri.parse(endpointUrl));
+    Response res;
+    try {
+      res =
+          await get(Uri.parse(endpointUrl)).timeout(const Duration(seconds: 5));
+      //Below logger causes asynchronous suspension
+      //Logger().i(res.statusCode); 
+      if (res.statusCode == 200) {
+        //final json = jsonDecode(res.body);
+        //return SensorDataModel.fromJson(json['userData']);
 
-    Logger().i(res.statusCode);
-    if (res.statusCode == 200) {
-      final json = jsonDecode(res.body);
-      return SensorDataModel.fromJson(json['userData']);
-    } else {
-      throw Exception('Failed to load user data');
+        // Use the compute function to run parseJson in a separate isolate.
+        return compute(parseJson, res);
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (e) {
+      throw Exception('Cannot fetch data from server');
     }
-
     /*
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 5));
     return SensorDataModel(1, 1, 1, 1, 1, 1, 1, "Abnormal");
     */
+  }
+
+  // A function that converts a response body into a SensorModel in a seperate isolate
+  SensorDataModel parseJson(Response response) {
+    final parsedJson = jsonDecode(response.body);
+    return SensorDataModel.fromJson(parsedJson['userData']);
   }
 }
