@@ -39,13 +39,20 @@ class _HomeState extends State<Home> {
    */
   void showAlertOrNot() async {
     AlertDataNotifier alertDataNotifier = context.read<AlertDataNotifier>();
+    SensorDataProvider sensorDataProvider = context.read<SensorDataProvider>();
+    if (sensorDataProvider.sensorDataModel?.status == "Abnormal") {
+      whenAbnormal(alertDataNotifier);
+    }
+  }
+
+  void whenAbnormal(AlertDataNotifier alertDataNotifier) {
     if (alertDataNotifier.alertStatus == AlertStatus.active) {
       context
           .read<SensorDataProvider>()
           .setFetchDataStatus(FetchSensorDataStatus.disabled);
       //! #### MUST - use between init alert screen to cancel pressed
       alertDataNotifier.alertStatus = AlertStatus.disabled;
-      
+
       if (alertDataNotifier.cancelCount == 0) {
         Future.delayed(const Duration(seconds: 5), () {
           Navigator.push(context, MaterialPageRoute(

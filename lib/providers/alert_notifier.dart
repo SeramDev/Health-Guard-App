@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 // In int = seconds.
 // You can add, edit the list as you like
 const List<Duration> delayPeriods = [
-  Duration(seconds: 5),
   Duration(seconds: 10),
   Duration(seconds: 20),
-  Duration(seconds: 25),
+  Duration(seconds: 30),
+  Duration(seconds: 45),
 ];
 
 // Time for reset after an accident occured
