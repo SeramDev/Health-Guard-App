@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    context.read<SensorDataProvider>().fetchSensorData();
+    //context.read<SensorDataNotifier>().startFetching();
   }
 
   /*
@@ -37,15 +37,16 @@ class _HomeState extends State<Home> {
   So warning !
   This needed to be well managed, before calling Naviagtor, it will be controlled
    */
-  void showAlertOrNot() async {
-    AlertDataNotifier alertDataNotifier = context.read<AlertDataNotifier>();
-    SensorDataProvider sensorDataProvider = context.read<SensorDataProvider>();
-    if (sensorDataProvider.sensorDataModel?.status == "Abnormal") {
-      whenAbnormal(alertDataNotifier);
+  /*void showAlertOrNot() async {
+    //AlertDataNotifier alertDataNotifier = context.read<AlertDataNotifier>();
+    SensorDataNotifier sensorDataNotifier = context.read<SensorDataNotifier>();
+    if (sensorDataNotifier.fetchSensorData. == "Abnormal") {
+      print("Abnormal>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      //whenAbnormal(alertDataNotifier);
     }
-  }
+  }*/
 
-  void whenAbnormal(AlertDataNotifier alertDataNotifier) {
+  /*void whenAbnormal(AlertDataNotifier alertDataNotifier) {
     if (alertDataNotifier.alertStatus == AlertStatus.active) {
       context
           .read<SensorDataProvider>()
@@ -70,13 +71,18 @@ class _HomeState extends State<Home> {
           ));
         });
       }
-    }
-  }
+    }*/
+  //}
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.read<SensorDataNotifier>().startFetching();
+          },
+        ),
         body: FadeInRight(
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -97,36 +103,61 @@ class _HomeState extends State<Home> {
                   height: 30,
                 ),
                 Expanded(
-                  child: Consumer<SensorDataProvider>(
+                  child: Consumer<SensorDataNotifier>(
                     builder: (context, value, child) {
-                      showAlertOrNot();
-                      //!  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                      print("${value.fetchSensorData is LoadingSensorData}");
+                      //showAlertOrNot();
                       return CardCollection(
                         cards: [
                           SensorDataCard(
-                            title: "Heart Rate",
-                            image_path: AssetConstants.heartRateIcon,
-                            value: value.sensorDataModel?.heartRate,
-                            isLoading: value.isLoading,
-                          ),
+                              title: "Heart Rate",
+                              image_path: AssetConstants.heartRateIcon,
+                              value: value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .heartRate)
+                                  : 0.0,
+                              isLoading: value.fetchSensorData is LoadingSensorData),
                           SensorDataCard(
                             title: "SpO2",
                             image_path: AssetConstants.spo2Icon,
-                            value: value.sensorDataModel?.oxygenSaturation,
-                            isLoading: value.isLoading,
+                            value: value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .oxygenSaturation)
+                                  : 0.0,
+                              isLoading: value.fetchSensorData is LoadingSensorData
                           ),
+                          
                           SensorDataCard(
                             title: "Temperature",
                             image_path: AssetConstants.temperatureIcon,
-                            value: value.sensorDataModel?.temperature,
-                            isLoading: value.isLoading,
+                            value: value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .temperature)
+                                  : 0.0,
+                              isLoading: value.fetchSensorData is LoadingSensorData
                           ),
                           BloodPressureCard(
                             title: "Blood Pressure",
                             image_path: AssetConstants.bloodPressureIcon,
-                            sbp: value.sensorDataModel?.systolicBloodPressure,
-                            dbp: value.sensorDataModel?.diastolicBloodPressure,
-                            isLoading: value.isLoading,
+                            sbp: value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .systolicBloodPressure)
+                                  : 0.0,
+                            dbp: value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .diastolicBloodPressure)
+                                  : 0.0,
+                            isLoading: value.fetchSensorData is LoadingSensorData
                           ),
                         ],
                       );
@@ -156,19 +187,24 @@ class _HomeState extends State<Home> {
                       )
                     ],
                   ),
-                  child: Consumer<SensorDataProvider>(
+                  child: Consumer<SensorDataNotifier>(
                     builder: (context, value, child) {
-                      return value.isLoading == true
-                          ? const CircularProgressIndicator(
-                              color: AppColors.kWhite,
-                            )
-                          : CustomText(
-                              (value.sensorDataModel?.status == null)
-                                  ? ""
-                                  : "${value.sensorDataModel?.status}",
+                      if (value.fetchSensorData is FetchedSensorData) {
+                        return CustomText(
+                              value.fetchSensorData is FetchedSensorData
+                                  ? ((value.fetchSensorData
+                                          as FetchedSensorData)
+                                      .sensorData
+                                      .status)
+                                  : "",
                               fontSize: 30,
                               color: AppColors.kWhite,
                             );
+                      } else {
+                        return const CircularProgressIndicator(
+                              color: AppColors.kWhite,
+                            );
+                      }
                     },
                   ),
                 ),

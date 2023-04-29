@@ -1,12 +1,70 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:health_guard/models/objects.dart';
 import 'package:logger/logger.dart';
 import '../controllers/sensorData_controller.dart';
 
-enum FetchSensorDataStatus { disabled, active }
+enum DashBoardStatus { active, disabled }
+
+abstract class SensorData {}
+
+class InitSensorData extends SensorData {}
+
+class LoadingSensorData extends SensorData {}
+
+class FetchedSensorData extends SensorData {
+  final SensorDataModel sensorData;
+
+  FetchedSensorData({required this.sensorData});
+}
+
+class SensorDataNotifier extends ChangeNotifier {
+  DashBoardStatus dashBoardStatus = DashBoardStatus.active;
+  SensorData fetchSensorData = InitSensorData();
+  bool _isFetchRunning = false;
+
+  void startFetching() {
+    if (_isFetchRunning == false) {
+      _repeatFetching();
+    }
+    
+  }
+
+  void _repeatFetching() async {
+    if (dashBoardStatus == DashBoardStatus.active) {
+      _isFetchRunning = true;
+      _runFetching();
+    } else {
+      _isFetchRunning = false;
+    }
+  }
+
+  Future<void> _runFetching() async {
+    SensorDataModel result;
+    try {
+      fetchSensorData = LoadingSensorData();
+      notifyListeners();
+
+      result = await SensorDataController().fetchData();
+      fetchSensorData = FetchedSensorData(sensorData: result);
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e);
+      if (kDebugMode) {
+        print("Error -> SensorDataController().fetchData() throw an error !");
+      }
+    }
+    await Future.delayed(const Duration(seconds: 15));
+    _repeatFetching();
+  }
+}
+
+
+
+
+
+/*enum FetchSensorDataStatus { disabled, active }
 
 class SensorDataProvider extends ChangeNotifier {
   //---------local sensorData model
@@ -72,7 +130,7 @@ class SensorDataProvider extends ChangeNotifier {
 
       result = await SensorDataController().fetchData(); //.then((value) {
       _sensorDataModel = result;
-        //stop the loader
+      //stop the loader
       setLoading(false);
       notifyListeners();
       //});
@@ -86,8 +144,9 @@ class SensorDataProvider extends ChangeNotifier {
     /*
     Part 02 - The Repeater (delayed function recursion)
     */
-    await Future.delayed(const Duration(seconds: 15), () {
+    await Future.delayed(const Duration(seconds: 20), () {
       fetchSensorData();
     });
   }
 }
+*/

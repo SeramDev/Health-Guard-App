@@ -165,10 +165,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     onTap: () {
                       UtilFunctions.navigateToBackward(context);
                       context.read<AlertDataNotifier>().onCancel();
-                      context
+                      /*context
                           .read<SensorDataProvider>()
                           ..setFetchDataStatus(FetchSensorDataStatus.active)
-                          ..fetchSensorData(); 
+                          ..fetchSensorData(); */
                     },
                     width: 158,
                     height: 43,

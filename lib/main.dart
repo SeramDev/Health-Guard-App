@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:health_guard/providers/alert_notifier.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/sensorData_provider.dart';
@@ -16,6 +17,8 @@ import 'screens/main/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,7 +27,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => SignUpProvider()),
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
-      ChangeNotifierProvider(create: (context) => SensorDataProvider()),
+      ChangeNotifierProvider(create: (context) => SensorDataNotifier()),//SensorDataProvider()),
       ChangeNotifierProvider(create: (context) => MapDataModel()),
       ChangeNotifierProvider(create: (context) => AlertDataNotifier()),
     ],
