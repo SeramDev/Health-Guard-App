@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
-import 'package:health_guard/providers/alert_notifier.dart';
-import 'package:health_guard/providers/sensorData_provider.dart';
+import 'package:health_guard/providers/fetchdata_notifier.dart';
 import 'package:health_guard/screens/main/home/home.dart';
 import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/utils/app_colors.dart';
@@ -20,10 +19,17 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
+  void onCancelPressed() {
+    UtilFunctions.navigateToBackward(context);
+    //
+    //context.read<AlertNavigationNotifier>().onCancellPressed();
+    //context.read<SensorDataNotifier>().startFetching();
+    context.read<FetchDataNotifier>().onCancell();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Container(
         width: size.width,
@@ -163,12 +169,15 @@ class _AlertScreenState extends State<AlertScreen> {
                   child: CustomButton(
                     text: "CANCEL",
                     onTap: () {
-                      UtilFunctions.navigateToBackward(context);
-                      context.read<AlertDataNotifier>().onCancel();
+                      /*UtilFunctions.navigateToBackward(context);
+                      //
                       context
-                          .read<SensorDataProvider>()
-                          ..setFetchDataStatus(FetchSensorDataStatus.active)
-                          ..fetchSensorData(); 
+                          .read<AlertNavigationNotifier>()
+                          .onCancellPressed();
+                      context.read<SensorDataNotifier>().dashBoardStatus =
+                          DashBoardStatus.active;
+                      context.read<SensorDataNotifier>().startFetching();*/
+                      onCancelPressed();
                     },
                     width: 158,
                     height: 43,

@@ -1,21 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:health_guard/providers/alert_notifier.dart';
+import 'package:flutter/services.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
-import 'package:health_guard/providers/sensorData_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
-import 'package:health_guard/screens/main/main_screen.dart';
+import 'package:health_guard/providers/fetchdata_notifier.dart';
 import 'package:health_guard/screens/map/map_model.dart';
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'firebase_options.dart';
-import 'screens/main/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,9 +23,17 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => SignUpProvider()),
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
-      ChangeNotifierProvider(create: (context) => SensorDataProvider()),
       ChangeNotifierProvider(create: (context) => MapDataModel()),
-      ChangeNotifierProvider(create: (context) => AlertDataNotifier()),
+      ChangeNotifierProvider(create: (context) => FetchDataNotifier())
+      /*ChangeNotifierProvider(
+          create: (context) => SensorDataNotifier()), //SensorDataProvider()),
+      ChangeNotifierProxyProvider<SensorDataNotifier, AlertNavigationNotifier>(
+        lazy: false,
+          create: (_) => AlertNavigationNotifier(),
+          update: (_, parentModelInstance, dependerModelInstance) {
+            return dependerModelInstance!..fetchingCounter(parentModelInstance);
+          }),
+          */
     ],
     child: const MyApp(),
   ));
@@ -44,7 +51,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //For testing Hard coded the screen
-      home:  Splash(),//MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+      home:
+          Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,
