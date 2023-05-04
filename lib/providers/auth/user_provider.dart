@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:health_guard/providers/sensorData_provider.dart';
 import 'package:health_guard/screens/auth/login.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';

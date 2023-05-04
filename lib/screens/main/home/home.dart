@@ -1,17 +1,15 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:health_guard/components/blood_pressure_card.dart';
-import 'package:health_guard/components/custom_button.dart';
-import 'package:health_guard/providers/alert_notifier.dart';
+import 'package:health_guard/providers/fetchdata_notifier.dart';
 import 'package:health_guard/screens/alert/alert.dart';
-import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
 import '../../../components/card_collection.dart';
 import '../../../components/custom_text.dart';
 import '../../../components/sensor_data_card.dart';
-import '../../../providers/sensorData_provider.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
 
@@ -23,14 +21,42 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  //late Timer _timer;
-
   @override
   void initState() {
     super.initState();
-    //context.read<SensorDataNotifier>().startFetching();
+    Future.delayed(const Duration(seconds: 2), () {
+      context.read<FetchDataNotifier>().startFetching();
+    });
   }
 
+  /*void showAlertOrNot() {
+    AlertNavigationNotifier alertNotifier =
+        context.read<AlertNavigationNotifier>();
+    SensorDataNotifier sensorDataNotifier = context.read<SensorDataNotifier>();
+    if (alertNotifier.navigatePermission == AlertNavigatePermission.allowed) {
+      alertNotifier.navigatePermission = AlertNavigatePermission.disallowed;
+      sensorDataNotifier.fetchingStatus = FetchingStatus.disabled;
+      if (alertNotifier.cancelButtonPressTimes == 0) {
+        Future.delayed(const Duration(seconds: 5), () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (BuildContext context) {
+              return AlertScreen();
+            },
+          ));
+        });
+      } else {
+        alertNotifier.navigatePermission = AlertNavigatePermission.disallowed;
+        sensorDataNotifier.fetchingStatus = FetchingStatus.disabled;
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (BuildContext context) {
+              return AlertScreen();
+            },
+          ));
+        });
+      }
+    }
+  }*/
   /*
   This method is called by Consumer widget
   Every times wheb consumer rebuild, this will be called.
@@ -74,15 +100,50 @@ class _HomeState extends State<Home> {
     }*/
   //}
 
+  void alertNavigationAndSnakbarController() {
+    print("${context.read<FetchDataNotifier>().fetchData.runtimeType}");
+    if (context.read<FetchDataNotifier>().fetchData
+        is UpdateFetchDataWithNaviagtion) {
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (BuildContext context) {
+            return AlertScreen();
+          },
+        ));
+      });
+    } else {
+      if (context.read<FetchDataNotifier>().fetchData
+          is UpdateFetchDataWithResetNotification) {
+        AnimatedSnackBar.rectangle(
+          'Resetted',
+          'Your Health checking paused for 20 min',
+          type: AnimatedSnackBarType.info,
+          brightness: Brightness.light,
+        ).show(
+          context,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           onPressed: () {
-            context.read<SensorDataNotifier>().startFetching();
+            AnimatedSnackBar.rectangle(
+              'Resetted',
+                'Your Health checking paused for 20 min',
+                type: AnimatedSnackBarType.info,
+                brightness: Brightness.light,
+              ).show(
+                context,
+              );
+            //context.read<FetchDataNotifier>().onCancell();
+            //context.read<AlertNavigationNotifier>().onCancellPressed();
           },
-        ),
+        ),*/
         body: FadeInRight(
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -103,62 +164,56 @@ class _HomeState extends State<Home> {
                   height: 30,
                 ),
                 Expanded(
-                  child: Consumer<SensorDataNotifier>(
+                  child: Consumer<FetchDataNotifier>(
                     builder: (context, value, child) {
-                      print("${value.fetchSensorData is LoadingSensorData}");
-                      //showAlertOrNot();
+                      //
+                      //
+                      alertNavigationAndSnakbarController();
+                      //
+                      //
                       return CardCollection(
                         cards: [
                           SensorDataCard(
                               title: "Heart Rate",
                               image_path: AssetConstants.heartRateIcon,
-                              value: value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
+                              value: value.fetchData is LoadedFetchData
+                                  ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .heartRate)
                                   : 0.0,
-                              isLoading: value.fetchSensorData is LoadingSensorData),
+                              isLoading: value.fetchData is LoadingFetchData),
                           SensorDataCard(
-                            title: "SpO2",
-                            image_path: AssetConstants.spo2Icon,
-                            value: value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
+                              title: "SpO2",
+                              image_path: AssetConstants.spo2Icon,
+                              value: value.fetchData is LoadedFetchData
+                                  ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .oxygenSaturation)
                                   : 0.0,
-                              isLoading: value.fetchSensorData is LoadingSensorData
-                          ),
-                          
+                              isLoading: value.fetchData is LoadingFetchData),
                           SensorDataCard(
-                            title: "Temperature",
-                            image_path: AssetConstants.temperatureIcon,
-                            value: value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
+                              title: "Temperature",
+                              image_path: AssetConstants.temperatureIcon,
+                              value: value.fetchData is LoadedFetchData
+                                  ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .temperature)
                                   : 0.0,
-                              isLoading: value.fetchSensorData is LoadingSensorData
-                          ),
+                              isLoading: value.fetchData is LoadingFetchData),
                           BloodPressureCard(
-                            title: "Blood Pressure",
-                            image_path: AssetConstants.bloodPressureIcon,
-                            sbp: value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
+                              title: "Blood Pressure",
+                              image_path: AssetConstants.bloodPressureIcon,
+                              sbp: value.fetchData is LoadedFetchData
+                                  ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .systolicBloodPressure)
                                   : 0.0,
-                            dbp: value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
+                              dbp: value.fetchData is LoadedFetchData
+                                  ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .diastolicBloodPressure)
                                   : 0.0,
-                            isLoading: value.fetchSensorData is LoadingSensorData
-                          ),
+                              isLoading: value.fetchData is LoadingFetchData),
                         ],
                       );
                     },
@@ -187,23 +242,22 @@ class _HomeState extends State<Home> {
                       )
                     ],
                   ),
-                  child: Consumer<SensorDataNotifier>(
+                  child: Consumer<FetchDataNotifier>(
                     builder: (context, value, child) {
-                      if (value.fetchSensorData is FetchedSensorData) {
+                      if (value.fetchData is LoadedFetchData) {
                         return CustomText(
-                              value.fetchSensorData is FetchedSensorData
-                                  ? ((value.fetchSensorData
-                                          as FetchedSensorData)
-                                      .sensorData
-                                      .status)
-                                  : "",
-                              fontSize: 30,
-                              color: AppColors.kWhite,
-                            );
+                          value.fetchData is LoadedFetchData
+                              ? ((value.fetchData as LoadedFetchData)
+                                  .sensorData
+                                  .status)
+                              : "",
+                          fontSize: 30,
+                          color: AppColors.kWhite,
+                        );
                       } else {
                         return const CircularProgressIndicator(
-                              color: AppColors.kWhite,
-                            );
+                          color: AppColors.kWhite,
+                        );
                       }
                     },
                   ),
