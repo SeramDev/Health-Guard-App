@@ -1,28 +1,29 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:health_guard/components/custom_button.dart';
-import 'package:health_guard/components/logout_btn.dart';
-import 'package:health_guard/models/objects.dart';
 import 'package:provider/provider.dart';
+
+import '../../../components/custom_button.dart';
 import '../../../components/custom_text.dart';
+import '../../../components/logout_btn.dart';
 import '../../../components/profile_menu_button.dart';
+import '../../../models/objects.dart';
 import '../../../providers/auth/user_provider.dart';
 import '../../../utils/app_colors.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+class AmbulanceProfile extends StatefulWidget {
+  const AmbulanceProfile({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<AmbulanceProfile> createState() => _AmbulanceProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _AmbulanceProfileState extends State<AmbulanceProfile> {
   @override
   Widget build(BuildContext context) {
     return FadeInRight(
       child: Consumer<UserProvider>(
         builder: (context, value, child) {
-          if (value.consumer is! UserModel) {
+          if (value.consumer is! AmbulanceModel) {
             return const Center();
           } else {
             return SafeArea(
@@ -38,36 +39,17 @@ class _ProfileState extends State<Profile> {
                         ),
                         const Center(
                           child: CustomText(
-                            "User Profile",
+                            "Ambulance Profile",
                             fontSize: 25,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryColor,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        value.isLoading
-                            ? const CircularProgressIndicator()
-                            : InkWell(
-                                onTap: () =>
-                                    value.selectImageAndUpload(context),
-                                child: CircleAvatar(
-                                  backgroundColor: AppColors.primaryColor,
-                                  radius: 100,
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      (value.consumer as UserModel).img,
-                                    ),
-                                    radius: 96,
-                                  ),
-                                ),
-                              ),
+                        ),  
                         const SizedBox(
                           height: 15,
                         ),
                         CustomText(
-                          (value.consumer as UserModel).name,
+                          (value.consumer as AmbulanceModel).ambulanceName,
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                         ),
@@ -75,7 +57,7 @@ class _ProfileState extends State<Profile> {
                           height: 3,
                         ),
                         CustomText(
-                          (value.consumer as UserModel).email,
+                          (value.consumer as AmbulanceModel).email,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

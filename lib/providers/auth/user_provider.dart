@@ -2,20 +2,19 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:health_guard/models/consumer.dart';
 import 'package:health_guard/screens/auth/login.dart';
+import 'package:health_guard/screens/main/ambulance/ambulance_main_screen.dart';
+import 'package:health_guard/screens/main/main_screen.dart';
+import 'package:health_guard/screens/main/police_station/police_main_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import '../../controllers/auth_controller.dart';
 import '../../models/objects.dart';
-import '../../screens/main/main_screen.dart';
 import '../../utils/util_functions.dart';
 
 class UserProvider extends ChangeNotifier {
-  //---------local user model
-  late UserModel _userModel;
-  //---------get user model
-  UserModel get userModel => _userModel;
+  ConsumerModel consumer = NoUser();
 
   //---------store loading state
   bool _isLoading = false;
@@ -29,23 +28,19 @@ class UserProvider extends ChangeNotifier {
   }
 
   //---------fetch single user data
-  Future<void> fetchUser(String id) async {
+  Future<ConsumerModel> fetchUser(String id) async {
     try {
       //---------start the loader
       setLoading(true);
 
-      await AuthController().fetchUserData(id).then((value) {
-        if (value != null) {
-          _userModel = value;
-          //---------calling this to notify that usermodel has been set
-          notifyListeners();
-
-          //---------stop the loader
-          setLoading(false);
-        }
-      });
+      ConsumerModel value = await AuthController().fetchUserData(id);
+      consumer = value;
+      notifyListeners();
+      setLoading(false);
+      return consumer;
     } catch (e) {
       Logger().e(e);
+      return NoUser();
     }
   }
 
@@ -57,14 +52,21 @@ class UserProvider extends ChangeNotifier {
         UtilFunctions.navigateTo(context, const Login());
       } else {
         Logger().i('User is signed in!');
-        await fetchUser(user.uid);
+        ConsumerModel model = await fetchUser(user.uid);
+        notifyListeners();
+        print(model.runtimeType);
 
-        // ignore: use_build_context_synchronously
-        //! I think this unwanted, bcz this called by Homescreen's initState()
-        /*Provider.of<SensorDataProvider>(context, listen: false)
-            .fetchSensorData();*/
-        // ignore: use_build_context_synchronously
-        UtilFunctions.navigateToForwardOnly(context, const MainScreen());
+        print("done");
+
+        if (model is UserModel) {
+          UtilFunctions.navigateTo(context, const MainScreen());
+        } else if (model is PoliceStationModel) {
+          UtilFunctions.navigateTo(context, const PoliceMain());
+        } else if (model is AmbulanceModel) {
+          UtilFunctions.navigateTo(context, const AmbulanceMain());
+        } else {
+          print("no user received************************************");
+        }
       }
     });
   }
@@ -112,11 +114,11 @@ class UserProvider extends ChangeNotifier {
       setLoading(true);
 
       //------start uploading the image
-      String imgUrl = await AuthController()
-          .uploadAndUpdateProfileImage(context, userModel.uid, image);
+      String imgUrl = await AuthController().uploadAndUpdateProfileImage(
+          context, (consumer as UserModel).uid, image);
       if (imgUrl != "") {
         //-------update the usermodel img feild with returned download url
-        _userModel.img = imgUrl;
+        (consumer as UserModel).img = imgUrl;
         notifyListeners();
 
         //-----stop the loader

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of objects;
+part of 'objects.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -48,4 +48,40 @@ Map<String, dynamic> _$SensorDataModelToJson(SensorDataModel instance) =>
       'longitude': instance.longitude,
       'latitude': instance.latitude,
       'status': instance.status,
+    };
+
+PoliceStationModel _$PoliceStationModelFromJson(Map<String, dynamic> json) =>
+    PoliceStationModel(
+      json['uid'] as String,
+      json['policeStationName'] as String,
+      json['PoliceStationEmail'] as String,
+      json['PoliceStationAddress'] as String,
+      json['role'] as String,
+    );
+
+Map<String, dynamic> _$PoliceStationModelToJson(PoliceStationModel instance) =>
+    <String, dynamic>{
+      'uid': instance.uid,
+      'policeStationName': instance.policeStationName,
+      'PoliceStationEmail': instance.PoliceStationEmail,
+      'PoliceStationAddress': instance.PoliceStationAddress,
+      'role': instance.role,
+    };
+
+AmbulanceModel _$AmbulanceModelFromJson(Map<String, dynamic> json) =>
+    AmbulanceModel(
+      json['uid'] as String,
+      json['ambulanceName'] as String,
+      json['hospitalName'] as String,
+      json['email'] as String,
+      json['role'] as String,
+    );
+
+Map<String, dynamic> _$AmbulanceModelToJson(AmbulanceModel instance) =>
+    <String, dynamic>{
+      'uid': instance.uid,
+      'ambulanceName': instance.ambulanceName,
+      'hospitalName': instance.hospitalName,
+      'email': instance.email,
+      'role': instance.role,
     };

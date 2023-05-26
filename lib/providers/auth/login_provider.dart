@@ -16,9 +16,9 @@ class LoginProvider extends ChangeNotifier {
   TextEditingController get passwordController => _passwordController;
 
   //---------dropdown controller
-  String _dropdownController = "User";
+  String _loginRoleController = "User";
   //---------get dropdown controller
-  String get dropdownController => _dropdownController;
+  String get loginRoleController => _loginRoleController;
 
   //---------store loading state
   bool _isLoading = false;
@@ -31,9 +31,9 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //---------store selected dropdown option
-  void setSelectedOption(String val) {
-    _dropdownController = val;
+  //---------save selected login role
+  void setSelectedLoginRole(String val) {
+    _loginRoleController = val;
     notifyListeners();
   }
 
@@ -73,8 +73,6 @@ class LoginProvider extends ChangeNotifier {
 
         //------stop the loader
         setLoading(false);
-
-        Logger().i(_dropdownController);
       }
     } catch (e) {
       setLoading(false);

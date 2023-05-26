@@ -10,7 +10,7 @@ class SignUpProvider extends ChangeNotifier {
   //---------get email controller
   TextEditingController get emailController => _emailController;
 
-  //---------email controller
+  //---------age controller
   final _ageController = TextEditingController();
   //---------get email controller
   TextEditingController get ageController => _ageController;
@@ -35,6 +35,16 @@ class SignUpProvider extends ChangeNotifier {
   //---------get dropdown controller
   String get genderController => _genderController;
 
+  //---------address controller
+  final _addressController = TextEditingController();
+  //---------get email controller
+  TextEditingController get addressController => _addressController;
+
+  //---------hospital name controller
+  final _hospitalNameController = TextEditingController();
+  //---------get email controller
+  TextEditingController get hospitalNameController => _hospitalNameController;
+
   //---------store loading state
   bool _isLoading = false;
   //---------get loading state
@@ -46,62 +56,127 @@ class SignUpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //---------store selected dropdown option
-  void setSelectedOption(String val) {
+  //---------save selected role
+  void setSelectedSignUpRole(String val) {
     _roleController = val;
     notifyListeners();
   }
 
-  //---------store selected gender
+  //---------save selected gender
   void setSelectedGender(String val) {
     _genderController = val;
     notifyListeners();
   }
 
   //-------------validate textfields function
-  bool validateFields(BuildContext context) {
-    //-------first checking all the textfields are empty or not
-    if (_emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _nameController.text.isEmpty ||
-        _ageController.text.isEmpty) {
-      AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please fill all the fields");
-      return false;
-    } else if (!_emailController.text.contains("@")) {
-      AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please enter a valid email");
-      return false;
-    } else if (_passwordController.text.length < 6) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR",
-          "Password must have more than 6 digits");
-      return false;
+  bool validateFields(BuildContext context, String role) {
+    if (role == "User") {
+      //-------first checking all the textfields are empty or not
+      if (_emailController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _nameController.text.isEmpty ||
+          _ageController.text.isEmpty) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please fill all the fields");
+        return false;
+      } else if (!_emailController.text.contains("@")) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please enter a valid email");
+        return false;
+      } else if (_passwordController.text.length < 6) {
+        AlertHelper.showAlert(context, DialogType.ERROR, "ERROR",
+            "Password must have more than 6 digits");
+        return false;
+      } else {
+        return true;
+      }
+    } else if (role == "Police Station") {
+      //-------first checking all the textfields are empty or not
+      if (_emailController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _nameController.text.isEmpty ||
+          _addressController.text.isEmpty) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please fill all the fields");
+        return false;
+      } else if (!_emailController.text.contains("@")) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please enter a valid email");
+        return false;
+      } else if (_passwordController.text.length < 6) {
+        AlertHelper.showAlert(context, DialogType.ERROR, "ERROR",
+            "Password must have more than 6 digits");
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      //-------first checking all the textfields are empty or not
+      if (_emailController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _nameController.text.isEmpty ||
+          _hospitalNameController.text.isEmpty) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please fill all the fields");
+        return false;
+      } else if (!_emailController.text.contains("@")) {
+        AlertHelper.showAlert(
+            context, DialogType.ERROR, "ERROR", "Please enter a valid email");
+        return false;
+      } else if (_passwordController.text.length < 6) {
+        AlertHelper.showAlert(context, DialogType.ERROR, "ERROR",
+            "Password must have more than 6 digits");
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
   //-------------start signup process
-  Future<void> startSignup(BuildContext context) async {
+  Future<void> startSignup(BuildContext context, String role) async {
     try {
-      if (validateFields(context)) {
+      if (validateFields(context, role)) {
         //------start the loader
         setLoading(true);
 
-        await AuthController().registerUser(
+        if (role == "User") {
+          await AuthController().registerUser(
             context,
             _emailController.text,
             _passwordController.text,
             _nameController.text,
             int.parse(_ageController.text),
             _genderController,
-            _roleController);
+            _roleController,
+          );
+        } else if (role == "Police Station") {
+          await AuthController().registerPoliceStation(
+            context,
+            _emailController.text,
+            _passwordController.text,
+            _addressController.text,
+            _nameController.text,
+            _roleController,
+          );
+        } else {
+          await AuthController().registerAmbulance(
+            context,
+            _emailController.text,
+            _passwordController.text,
+            _hospitalNameController.text,
+            _nameController.text,
+            _roleController,
+          );
+        }
 
         //------clear textfields
         _emailController.clear();
         _passwordController.clear();
         _nameController.clear();
-        _ageController.clear;
+        _ageController.clear();
+        _addressController.clear();
+        _hospitalNameController.clear();
 
         //------stop the loader
         setLoading(false);

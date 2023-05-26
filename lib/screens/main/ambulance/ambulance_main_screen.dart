@@ -1,28 +1,28 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:health_guard/screens/main/home/home.dart';
-import 'package:health_guard/screens/main/profile/profile.dart';
-import 'package:health_guard/utils/app_colors.dart';
-import '../../utils/alert_helper.dart';
-import '../../utils/assets_constants.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:health_guard/screens/main/ambulance/ambulance_profile.dart';
+import 'package:health_guard/screens/map/map.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({
-    Key? key,
-  }) : super(key: key);
+import '../../../components/logout_btn.dart';
+import '../../../utils/alert_helper.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/assets_constants.dart';
+
+class AmbulanceMain extends StatefulWidget {
+  const AmbulanceMain({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<AmbulanceMain> createState() => _AmbulanceMainState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  @override
+class _AmbulanceMainState extends State<AmbulanceMain> {
+      @override
   void initState() {
     _screens.addAll({
-      const Home(),
-      const Profile(),
+      const AmbulanceMapScreen(),
+      const AmbulanceProfile(),
     });
     super.initState();
   }

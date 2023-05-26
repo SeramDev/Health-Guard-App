@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:health_guard/components/custom_dropdown.dart';
 import 'package:health_guard/components/custom_dropdown_signup.dart';
+import 'package:health_guard/components/user_form.dart';
 import 'package:health_guard/screens/auth/login.dart';
 import 'package:provider/provider.dart';
+import '../../components/ambulace_form.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_text.dart';
-import '../../components/custom_textfield.dart';
+import '../../components/police_form.dart';
 import '../../providers/auth/signup_provider.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/assets_constants.dart';
@@ -59,42 +60,15 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(
                     height: 14,
                   ),
-                  CustomTextfield(
-                    lableText: "Name",
-                    //don't add (context, listen: false) when calling provider methods for property values.
-                    //add (listen: false) only when calling provider methods within a function.
-                    controller:
-                        Provider.of<SignUpProvider>(context).nameController,
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  CustomTextfield(
-                    lableText: "Age",
-                    controller:
-                        Provider.of<SignUpProvider>(context).ageController,
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  CustomDropdown(),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  CustomTextfield(
-                    lableText: "Email",
-                    controller:
-                        Provider.of<SignUpProvider>(context).emailController,
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  CustomTextfield(
-                    lableText: "Password",
-                    isObsecure: true,
-                    controller:
-                        Provider.of<SignUpProvider>(context).passwordController,
-                  ),
+                  Consumer<SignUpProvider>(builder: (context, value, child) {
+                    if (value.roleController == "User") {
+                      return const UserForm();
+                    } else if (value.roleController == "Police Station") {
+                      return const PoliceForm();
+                    } else {
+                      return const AmbulanceForm();
+                    }
+                  }),
                   const SizedBox(
                     height: 14,
                   ),
@@ -124,7 +98,7 @@ class _SignUpState extends State<SignUp> {
                         height: 40,
                         width: 170,
                         onTap: () {
-                          value.startSignup(context);
+                          value.startSignup(context, value.roleController);
                         },
                       );
                     },

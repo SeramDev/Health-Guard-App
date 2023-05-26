@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:health_guard/models/consumer.dart';
 import 'package:health_guard/screens/auth/login.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:logger/logger.dart';
@@ -17,7 +18,8 @@ class AuthController {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //------------create the user collection refference
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference consumers =
+      FirebaseFirestore.instance.collection('consumers');
 
   //------------signup function
   Future<void> registerUser(
@@ -65,9 +67,93 @@ class AuthController {
     }
   }
 
+  Future<void> registerPoliceStation(
+    BuildContext context,
+    String email,
+    String password,
+    String address,
+    String name,
+    String role,
+  ) async {
+    try {
+      //---------send email and password to the firebase and create a user
+      await auth
+          .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      )
+          .then((value) async {
+        //---------------check if the user credential object is not null
+        if (value.user != null) {
+          //----------------save other user data in cloud firestore
+          await savePoliceData(
+            PoliceStationModel(
+              value.user!.uid,
+              name,
+              email,
+              address,
+              role,
+            ),
+          );
+          //----------------if user created successfully show an alert
+          // ignore: use_build_context_synchronously
+          AlertHelper.showAlert(
+              context, DialogType.SUCCES, "Success", "Registration Success!");
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      //----------show error dialog
+      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+    } catch (e) {
+      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+    }
+  }
+
+  Future<void> registerAmbulance(
+    BuildContext context,
+    String email,
+    String password,
+    String hospital,
+    String name,
+    String role,
+  ) async {
+    try {
+      //---------send email and password to the firebase and create a user
+      await auth
+          .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      )
+          .then((value) async {
+        //---------------check if the user credential object is not null
+        if (value.user != null) {
+          //----------------save other user data in cloud firestore
+          await saveAmbulanceData(
+            AmbulanceModel(
+              value.user!.uid,
+              name,
+              hospital,
+              email,
+              role,
+            ),
+          );
+          //----------------if user created successfully show an alert
+          // ignore: use_build_context_synchronously
+          AlertHelper.showAlert(
+              context, DialogType.SUCCES, "Success", "Registration Success!");
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      //----------show error dialog
+      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+    } catch (e) {
+      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+    }
+  }
+
   //-------------save user data in firestore cloud
   Future<void> saveUserData(UserModel model) async {
-    return users
+    return consumers
         .doc(model.uid)
         .set(
           model.toJson(),
@@ -77,19 +163,63 @@ class AuthController {
         .catchError((error) => Logger().e("Failed to merge data: $error"));
   }
 
+  //-------------save police data in firestore cloud
+  Future<void> savePoliceData(PoliceStationModel model) async {
+    return consumers
+        .doc(model.uid)
+        .set(
+          model.toJson(),
+          SetOptions(merge: true),
+        )
+        .then((value) => Logger().i("police data saved"))
+        .catchError((error) => Logger().e("Failed to merge data: $error"));
+  }
+
+  //-------------save ambulance data in firestore cloud
+  Future<void> saveAmbulanceData(AmbulanceModel model) async {
+    return consumers
+        .doc(model.uid)
+        .set(
+          model.toJson(),
+          SetOptions(merge: true),
+        )
+        .then((value) => Logger().i("ambulance data saved"))
+        .catchError((error) => Logger().e("Failed to merge data: $error"));
+  }
+
   //-------------fetch user data saved in cloud firestore
-  Future<UserModel?> fetchUserData(String uid) async {
+  Future<ConsumerModel> fetchUserData(String uid) async {
     try {
       //---------firebase query that fetch user data
-      DocumentSnapshot snapshot = await users.doc(uid).get();
+      DocumentSnapshot snapshot = await consumers.doc(uid).get();
+      print(snapshot.data());
 
-      //---------mapping fetch data to user model
-      UserModel model =
-          UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
-      return model;
+      if (snapshot.data() != null) {
+        print((snapshot.data() as Map<String, dynamic>));
+        String role = (snapshot.data() as Map<String, dynamic>)["role"];
+        if (role == "User") {
+          print("**************************************");
+          //---------mapping fetch data to user model
+          UserModel model =
+              UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
+          return model;
+        } else if (role == "Police Station") {
+          //---------mapping fetch data to police model
+          PoliceStationModel model = PoliceStationModel.fromJson(
+              snapshot.data() as Map<String, dynamic>);
+          return model;
+        } else {
+          //---------mapping fetch data to ambulance model
+          AmbulanceModel model =
+              AmbulanceModel.fromJson(snapshot.data() as Map<String, dynamic>);
+          return model;
+        }
+      } else {
+        return NoUser();
+      }
     } catch (e) {
       Logger().e(e);
-      return null;
+      return NoUser();
     }
   }
 
@@ -144,7 +274,7 @@ class AuthController {
       final String downloadUrl = await snapshot.ref.getDownloadURL();
 
       //-----------saving the products data in cloud firestore
-      await users.doc(uid).update(
+      await consumers.doc(uid).update(
         {
           'img': downloadUrl,
         },
