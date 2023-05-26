@@ -35,7 +35,7 @@ class CustomDropdownSignUp extends StatelessWidget {
                     ))
                 .toList(),
             onChanged: (val) {
-              value.setSelectedOption(val as String);
+              value.setSelectedSignUpRole(val as String);
             },
             icon: const Icon(
               Icons.arrow_drop_down_sharp,

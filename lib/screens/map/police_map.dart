@@ -24,9 +24,9 @@ import 'package:provider/provider.dart';
 
 enum User { medical, police }
 
-class PoliceMedicalMapScreen extends StatelessWidget {
+class PoliceMapScreen extends StatelessWidget {
   final User user;
-  const PoliceMedicalMapScreen({required this.user, super.key});
+  const PoliceMapScreen({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {

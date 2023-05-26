@@ -1,7 +1,7 @@
 part of "objects.dart";
 
 @JsonSerializable()
-class UserModel {
+class UserModel extends ConsumerModel{
   String uid;
   String name;
   int age;
@@ -10,7 +10,8 @@ class UserModel {
   String role;
   String img;
 
-  UserModel(this.uid, this.name, this.age, this.gender, this.email, this.role, this.img);
+  UserModel(this.uid, this.name, this.age, this.gender, this.email, this.role,
+      this.img);
 
   //---------bind json data to user model
   factory UserModel.fromJson(Map<String, dynamic> json) =>

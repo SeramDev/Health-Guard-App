@@ -27,7 +27,7 @@ class CustomDropdownLogin extends StatelessWidget {
       child: Consumer<LoginProvider>(
         builder: (context, value, child) {
           return DropdownButtonFormField(
-            value: value.dropdownController,
+            value: value.loginRoleController,
             items: userRoleList
                 .map((e) => DropdownMenuItem(
                       value: e,
@@ -35,7 +35,7 @@ class CustomDropdownLogin extends StatelessWidget {
                     ))
                 .toList(),
             onChanged: (val) {
-              value.setSelectedOption(val as String);
+              value.setSelectedLoginRole(val as String);
             },
             icon: const Icon(
               Icons.arrow_drop_down_sharp,
