@@ -43,7 +43,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   awesome_dialog: ^2.2.1
   logger: ^1.1.0
-  google_fonts: ^3.0.1
+  google_fonts: ^5.0.0
   flutter_svg: ^1.1.4
   responsive_framework: ^0.2.0
   animate_do: ^2.1.0
@@ -53,10 +53,15 @@ dependencies:
   provider: ^6.0.5
   json_annotation: ^4.7.0
   slide_countdown: ^0.5.0
-  http: ^0.13.5
+  http: any
   image_picker: ^0.8.6+4
   firebase_storage: ^11.2.1
   animated_snack_bar: ^0.3.0
+  geolocator: ^9.0.2
+  flutter_riverpod: ^2.3.6
+
+dependency_overrides:
+  http: any
 
 dev_dependencies:
   flutter_test:

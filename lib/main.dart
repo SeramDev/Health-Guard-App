@@ -1,10 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+//import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:health_guard/map/map_screen.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
+import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/screens/map/map_model.dart';
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -18,25 +22,28 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => SignUpProvider()),
-      ChangeNotifierProvider(create: (context) => LoginProvider()),
-      ChangeNotifierProvider(create: (context) => UserProvider()),
-      ChangeNotifierProvider(create: (context) => MapDataModel()),
-      ChangeNotifierProvider(create: (context) => FetchDataNotifier())
-      /*ChangeNotifierProvider(
-          create: (context) => SensorDataNotifier()), //SensorDataProvider()),
-      ChangeNotifierProxyProvider<SensorDataNotifier, AlertNavigationNotifier>(
-        lazy: false,
-          create: (_) => AlertNavigationNotifier(),
-          update: (_, parentModelInstance, dependerModelInstance) {
-            return dependerModelInstance!..fetchingCounter(parentModelInstance);
-          }),
-          */
-    ],
-    child: const MyApp(),
-  ));
+  runApp(riverpod.ProviderScope(
+    child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SignUpProvider()),
+          ChangeNotifierProvider(create: (context) => LoginProvider()),
+          ChangeNotifierProvider(create: (context) => UserProvider()),
+          ChangeNotifierProvider(create: (context) => MapDataModel()),
+          ChangeNotifierProvider(create: (context) => FetchDataNotifier())
+          /*ChangeNotifierProvider(
+              create: (context) => SensorDataNotifier()), //SensorDataProvider()),
+          ChangeNotifierProxyProvider<SensorDataNotifier, AlertNavigationNotifier>(
+            lazy: false,
+              create: (_) => AlertNavigationNotifier(),
+              update: (_, parentModelInstance, dependerModelInstance) {
+                return dependerModelInstance!..fetchingCounter(parentModelInstance);
+              }),
+              */
+        ],
+        child: const MyApp(),
+      ),
+  ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -52,7 +59,7 @@ class MyApp extends StatelessWidget {
       ),
       //For testing Hard coded the screen
       home:
-          Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+          MapScreen(userType: UserType.ambulanceUser,), //Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,
