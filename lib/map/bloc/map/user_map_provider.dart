@@ -39,11 +39,11 @@ class UserMapNotifier extends StateNotifier {
   UserMapNotifier(this.ref)
       : super(UserLoadingMapState(
             userLocation: UserLocation(
-                latitude: 8.76103431484167, longitude: 80.50497200778406),
+                latitude: 0.0, longitude: 0.0),
             policeLocation: PoliceLocation(
-                latitude: 9.321431814287571, longitude: 80.40737614408987),
+                latitude: 0.0, longitude: 0.0),
             ambulanceLocation: AmbulanceLocation(
-                latitude: 8.934514394256126, longitude: 80.0013611233864)));
+                latitude: 0.0, longitude: 0.0)));
 
   // This method is called by location bloc
   Future<bool> updateMapMarkers({required String uid}) async {
