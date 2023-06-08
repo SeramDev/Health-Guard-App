@@ -1,7 +1,0 @@
-Big picture
-
-
-                                                           
-Server ,accident data       ======>  [MapScreen]   <======    user location
-(via sensorData provider)                                   (via location plugin)
-                                                            
