@@ -17,8 +17,6 @@ class UserDetailNotifier extends StateNotifier {
   UserDetailNotifier(super.state);
 
   void getUserDetail() async {
-    print(
-        "*********************************************************************************************");
     UserDetailServiceResult userDetailServiceResult = await getUserDetails();
     if (userDetailServiceResult is SuccessUserDetailServiceResult) {
       state = SuccessUserDetailState(
