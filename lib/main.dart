@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:health_guard/map/map_screen.dart';
+import 'package:health_guard/map/user_map_screen.dart';
+import 'package:health_guard/map/widgets/map_section.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
-import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/screens/map/map_model.dart';
+import 'package:health_guard/screens/map/user_map.dart';
+
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
       ),
       //For testing Hard coded the screen
       home:
-          MapScreen(userType: UserType.ambulanceUser,), //Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+          NewUserMapScreen(userType: UserType.user,), //Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,

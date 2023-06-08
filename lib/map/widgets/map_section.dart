@@ -1,47 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:health_guard/map/map_bloc/map_provider.dart';
-import 'package:health_guard/map/map_screen.dart';
+import 'package:health_guard/map/bloc/map/user_map_provider.dart';
+import 'package:health_guard/map/ui_controllers/controllers.dart';
+import 'package:health_guard/map/widgets/map_bottom.dart';
+
+enum UserType { user, police, ambulance }
 
 class MapSection extends ConsumerStatefulWidget {
+  const MapSection({super.key, required this.userType});
+
   final UserType userType;
-  const MapSection({required this.userType, super.key});
 
   @override
   ConsumerState<MapSection> createState() => _MapSectionState();
 }
 
 class _MapSectionState extends ConsumerState<MapSection> {
-  //========================================================================
   List<LatLng> polylinePoints = [
     const LatLng(0, 0),
     const LatLng(0, 0),
   ];
+
   //default markes - (not showing on map)
-  Set<Marker> markers = {
-    const Marker(
-        markerId: MarkerId("accidentLocationMarker"),
-        position: LatLng(0.0, 0.0),
-        infoWindow: InfoWindow(title: "Accident"),
-        icon: BitmapDescriptor.defaultMarker),
-    // Marker for current app user location (medical/police)
-    const Marker(
-        markerId: MarkerId("userLocationMarker"),
-        position: LatLng(0.0, 0.0),
-        infoWindow: InfoWindow(title: "You"),
-        icon: BitmapDescriptor.defaultMarker),
-    const Marker(
-        markerId: MarkerId("ambulanceLocationMarker"),
-        position: LatLng(0.0, 0.0),
-        infoWindow: InfoWindow(title: "Ambulance"),
-        icon: BitmapDescriptor.defaultMarker),
-  };
-  //========================================================================
+  BitmapDescriptor mediIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor policeIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor accidentIcon = BitmapDescriptor.defaultMarker;
+
   bool isMapControllerInitialized = false;
+
+  Timer? timer;
 
   @override
   void initState() {
+    var mapNotifier = ref.read(userMapProvider.notifier);
+    String user = "123";
+    if (widget.userType == UserType.user) {
+      user = "123";
+    } else if (widget.userType == UserType.police) {
+      user = "456";
+    } else {
+      user = "789";
+    }
+    // 1st time
+    mapInitialize(uid: user);
+
+    // 2nd up (For periodic)
+    timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      mapNotifier.updateMapMarkers(uid: user);
+    });
     super.initState();
   }
 
@@ -54,15 +63,64 @@ class _MapSectionState extends ConsumerState<MapSection> {
 
   @override
   Widget build(BuildContext context) {
-     print(
-        "build****************************************************************************************");
-    //--------------State updater-------------------
-    var mapNotifier = ref.watch(mapProvider);
-    if (mapNotifier is SuccessMapState) {
-      markers = mapNotifier.markers;
-      print(markers.length);
-    }
-    //-----------------------------------------------
+    UserMapState mapDetails = ref.watch(userMapProvider) as UserMapState;
+
+    LatLng userLoacation = LatLng(
+        mapDetails.userLocation.latitude, mapDetails.userLocation.longitude);
+    LatLng policeLocation = LatLng(mapDetails.policeLocation.latitude,
+        mapDetails.policeLocation.longitude);
+
+    LatLng ambulanceLoacation = LatLng(mapDetails.ambulanceLocation.latitude,
+        mapDetails.ambulanceLocation.longitude);
+
+    Set<Marker> markers = {
+      /*
+      (widget.userType != UserType.user) ? Marker(
+          markerId: const MarkerId("userLocationMarker"),
+          position: userLoacation,
+          infoWindow: const InfoWindow(title: "User"),
+          icon: accidentIcon,
+          onTap: () {
+            //isUserMarkerTapped.value = true;
+            showBottomSheet(
+              context: context,
+              builder: (context) {
+                return MapBottom();
+              },
+            );
+          }) : const Marker(
+          markerId: MarkerId("none"),
+          position: LatLng(0.0, 0.0),
+          ),
+       */
+      // Marker for current app user location (medical/police)
+      Marker(
+          markerId: const MarkerId("userLocationMarker"),
+          position: userLoacation,
+          infoWindow: const InfoWindow(title: "User"),
+          icon: accidentIcon,
+          onTap: () {
+            //isUserMarkerTapped.value = true;
+            showBottomSheet(
+              context: context,
+              builder: (context) {
+                return MapBottom();
+              },
+            );
+          }),
+      Marker(
+          markerId: const MarkerId("pl"),
+          position: policeLocation,
+          infoWindow: const InfoWindow(title: "Police"),
+          icon: policeIcon),
+      Marker(
+          markerId: const MarkerId("amb"),
+          position:
+              ambulanceLoacation, //LatLng(80.29098364808792, 7.98490269331092),//ambulanceLoacation,
+          infoWindow: const InfoWindow(title: "Ambulance"),
+          icon: mediIcon)
+    };
+
     return GoogleMap(
       zoomControlsEnabled: false,
       trafficEnabled: false,
@@ -72,102 +130,70 @@ class _MapSectionState extends ConsumerState<MapSection> {
               LatLng(7.358985391103516, 80.65234292851416), //kandy as target
           zoom: 8.0),
       markers: markers,
-      polylines: {
+      /*polylines: {
         Polyline(
           polylineId: const PolylineId("route"),
           points: polylinePoints,
           color: const Color.fromARGB(172, 119, 45, 239),
           width: 6,
         ),
-      },
+      },*/
     );
   }
 
-  void updateLatLngBounds(LatLngBounds? latLngBounds) {
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  /*void updateLatLngBounds(LatLngBounds? latLngBounds) {
     if (isMapControllerInitialized) {
       if (latLngBounds != null) {
         mapController
             .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds!, 100));
       }
     }
+  }*/
+  void mapInitialize({required String uid}) async {
+    // 1 set value notifie r to LOADING
+    try {
+      await intializeIcons().timeout(const Duration(seconds: 2));
+      bool result =
+          await ref.read(userMapProvider.notifier).updateMapMarkers(uid: uid);
+      if (result == true) {
+        // set value notifier SUCCESS
+        isMapLoaded.value = true;
+      } else {
+        // set value to ERROR
+      }
+    } catch (e) {
+      // set value notifier to ERROR
+    }
+  }
+
+  Future<bool> intializeIcons() async {
+    try {
+      policeIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(
+              //This size is not working, so you have to change size of physical image
+              size: Size(20, 20)),
+          "assets/map/police128.png");
+
+      mediIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(
+              //This size is not working, so you have to change size of physical image
+              size: Size(20, 20)),
+          "assets/map/medi128.png");
+
+      accidentIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(
+              //This size is not working, so you have to change size of physical image
+              size: Size(20, 20)),
+          "assets/map/accident128.png");
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
-
-/*class MapBottom extends StatelessWidget {
-  const MapBottom({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
-        child: Container(
-          height: 80,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(12, 80, 78, 78).withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0, 5, 25, 5),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          radius: 28.0,
-                        ),
-                      ),
-                      const Text(
-                        "Sachin seram",
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  )),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 20.0),
-                      child: FloatingActionButton(
-                        backgroundColor: Color.fromARGB(255, 112, 138, 243),
-                        onPressed: () {
-                          // context
-                          //     .read<MapDataModel>()
-                          //     .updateUserCurrentLocation();
-                        },
-                        child: const Icon(
-                          Icons.directions_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-*/
