@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health_guard/map/ui_controllers/controllers.dart';
-
-import '../bloc/map/user_map_provider.dart';
 
 class MapLoadingProgressIndicator extends StatelessWidget {
   const MapLoadingProgressIndicator({super.key});
@@ -20,9 +17,9 @@ class MapLoadingProgressIndicator extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white70),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       CircularProgressIndicator(),
                       SizedBox(
                         height: 20.0,

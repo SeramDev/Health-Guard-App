@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
-import 'package:health_guard/screens/main/home/home.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
