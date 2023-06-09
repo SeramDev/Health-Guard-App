@@ -31,11 +31,10 @@ SensorDataModel _$SensorDataModelFromJson(Map<String, dynamic> json) =>
       (json['heartRate'] as num).toDouble(),
       (json['oxygenSaturation'] as num).toDouble(),
       (json['temperature'] as num).toDouble(),
-      (json['systolicBloodPressure'] as num).toDouble(),
-      (json['diastolicBloodPressure'] as num).toDouble(),
-      (json['longitude'] as num).toDouble(),
-      (json['latitude'] as num).toDouble(),
+      json['systolicBloodPressure'] as int,
+      json['diastolicBloodPressure'] as int,
       json['status'] as String,
+      json['isEmergencyButtonPressed'] as bool,
     );
 
 Map<String, dynamic> _$SensorDataModelToJson(SensorDataModel instance) =>
@@ -45,9 +44,8 @@ Map<String, dynamic> _$SensorDataModelToJson(SensorDataModel instance) =>
       'temperature': instance.temperature,
       'systolicBloodPressure': instance.systolicBloodPressure,
       'diastolicBloodPressure': instance.diastolicBloodPressure,
-      'longitude': instance.longitude,
-      'latitude': instance.latitude,
       'status': instance.status,
+      'isEmergencyButtonPressed': instance.isEmergencyButtonPressed,
     };
 
 PoliceStationModel _$PoliceStationModelFromJson(Map<String, dynamic> json) =>

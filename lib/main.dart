@@ -2,20 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-//import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:health_guard/map/user_map_screen.dart';
-import 'package:health_guard/map/widgets/map_section.dart';
 import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
-import 'package:health_guard/screens/map/map_model.dart';
-import 'package:health_guard/screens/map/user_map.dart';
-
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -24,13 +17,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(riverpod.ProviderScope(
-    child: MultiProvider(
+  runApp(
+    riverpod.ProviderScope(
+      child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => SignUpProvider()),
           ChangeNotifierProvider(create: (context) => LoginProvider()),
           ChangeNotifierProvider(create: (context) => UserProvider()),
-          ChangeNotifierProvider(create: (context) => MapDataModel()),
           ChangeNotifierProvider(create: (context) => FetchDataNotifier())
           /*ChangeNotifierProvider(
               create: (context) => SensorDataNotifier()), //SensorDataProvider()),
@@ -44,7 +37,7 @@ Future<void> main() async {
         ],
         child: const MyApp(),
       ),
-  ),
+    ),
   );
 }
 
@@ -61,7 +54,7 @@ class MyApp extends StatelessWidget {
       ),
       //For testing Hard coded the screen
       home:
-          NewUserMapScreen(userType: UserType.user,), //Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+          const Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,

@@ -81,7 +81,7 @@ Future<ServiceResult> updateAndRequestLoacations({required String uid}) async {
   try {
     Position position = await currentUserPosition();
     Map<String, dynamic> requestBody = {
-      "uid": 123,
+      "uid": uid,
       "longitude": position.longitude,//80.56773775671876, //position.longitude,
       "latitude": position.latitude//6.00807814077084   //position.latitude
     };

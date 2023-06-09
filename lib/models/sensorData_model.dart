@@ -5,11 +5,10 @@ class SensorDataModel {
   final double heartRate;
   final double oxygenSaturation;
   final double temperature;
-  final double systolicBloodPressure;
-  final double diastolicBloodPressure;
-  final double longitude;
-  final double latitude;
+  final int systolicBloodPressure;
+  final int diastolicBloodPressure;
   final String status;
+  final bool isEmergencyButtonPressed;
 
   SensorDataModel(
     this.heartRate,
@@ -17,9 +16,8 @@ class SensorDataModel {
     this.temperature,
     this.systolicBloodPressure,
     this.diastolicBloodPressure,
-    this.longitude,
-    this.latitude,
     this.status,
+    this.isEmergencyButtonPressed,
   );
 
   //bind json data to sensorData model

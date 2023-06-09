@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
-import 'package:health_guard/screens/main/home/home.dart';
-import 'package:health_guard/screens/map/map.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+
+import '../../map/user_map_screen.dart';
+import '../../map/widgets/map_section.dart';
 
 //sachin@gmail.com
 //sachin123
@@ -141,7 +142,9 @@ class _AlertScreenState extends State<AlertScreen> {
                 */
                 Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return UserMapScreen();
+                    return const NewUserMapScreen(
+                      userType: UserType.user,
+                    );
                   },
                 ));
                 //UtilFunctions.navigateTo(context, const UserMapScreen());

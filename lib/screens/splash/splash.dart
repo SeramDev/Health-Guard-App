@@ -1,9 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../components/custom_text.dart';
 import '../../providers/auth/user_provider.dart';
-import '../../utils/app_colors.dart';
 import '../../utils/assets_constants.dart';
 
 class Splash extends StatefulWidget {

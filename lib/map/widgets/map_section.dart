@@ -48,7 +48,7 @@ class _MapSectionState extends ConsumerState<MapSection> {
     mapInitialize(uid: user);
 
     // 2nd up (For periodic)
-    timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       mapNotifier.updateMapMarkers(uid: user);
     });
     super.initState();
@@ -104,21 +104,31 @@ class _MapSectionState extends ConsumerState<MapSection> {
             showBottomSheet(
               context: context,
               builder: (context) {
-                return MapBottom();
+                return const MapBottom();
               },
             );
           }),
-      Marker(
-          markerId: const MarkerId("pl"),
-          position: policeLocation,
-          infoWindow: const InfoWindow(title: "Police"),
-          icon: policeIcon),
-      Marker(
-          markerId: const MarkerId("amb"),
-          position:
-              ambulanceLoacation, //LatLng(80.29098364808792, 7.98490269331092),//ambulanceLoacation,
-          infoWindow: const InfoWindow(title: "Ambulance"),
-          icon: mediIcon)
+      (widget.userType != UserType.ambulance)
+          ? Marker(
+              markerId: const MarkerId("pl"),
+              position: policeLocation,
+              infoWindow: const InfoWindow(title: "Police"),
+              icon: policeIcon)
+          : const Marker(
+              markerId: MarkerId("none"),
+              position: LatLng(0.0, 0.0),
+            ),
+      (widget.userType != UserType.police)
+          ? Marker(
+              markerId: const MarkerId("amb"),
+              position:
+                  ambulanceLoacation, //LatLng(80.29098364808792, 7.98490269331092),//ambulanceLoacation,
+              infoWindow: const InfoWindow(title: "Ambulance"),
+              icon: mediIcon)
+          : const Marker(
+              markerId: MarkerId("none"),
+              position: LatLng(0.0, 0.0),
+            ),
     };
 
     return GoogleMap(

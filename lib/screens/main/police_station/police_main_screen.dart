@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:health_guard/screens/main/police_station/police_profile.dart';
-import 'package:health_guard/screens/map/map.dart';
+import '../../../map/user_map_screen.dart';
+import '../../../map/widgets/map_section.dart';
 import '../../../utils/alert_helper.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
@@ -19,7 +20,7 @@ class _PoliceMainState extends State<PoliceMain> {
     @override
   void initState() {
     _screens.addAll({
-      const PoliceMapScreen(user: User.police),
+      const NewUserMapScreen(userType: UserType.police,),
       const PoliceProfile(),
     });
     super.initState();
