@@ -14,8 +14,8 @@ class BloodPressureCard extends StatefulWidget {
 
   final String title;
   final String image_path;
-  final double? sbp;
-  final double? dbp;
+  final int? sbp;
+  final int? dbp;
   final bool isLoading;
 
   @override

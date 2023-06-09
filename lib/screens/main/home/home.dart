@@ -207,12 +207,12 @@ class _HomeState extends State<Home> {
                                   ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .systolicBloodPressure)
-                                  : 0.0,
+                                  : 0,
                               dbp: value.fetchData is LoadedFetchData
                                   ? ((value.fetchData as LoadedFetchData)
                                       .sensorData
                                       .diastolicBloodPressure)
-                                  : 0.0,
+                                  : 0,
                               isLoading: value.fetchData is LoadingFetchData),
                         ],
                       );

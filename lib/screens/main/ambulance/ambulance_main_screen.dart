@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:health_guard/screens/main/ambulance/ambulance_profile.dart';
-import 'package:health_guard/screens/map/map.dart';
-
 import '../../../components/logout_btn.dart';
+import '../../../map/user_map_screen.dart';
+import '../../../map/widgets/map_section.dart';
 import '../../../utils/alert_helper.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
@@ -21,7 +21,7 @@ class _AmbulanceMainState extends State<AmbulanceMain> {
       @override
   void initState() {
     _screens.addAll({
-      const AmbulanceMapScreen(),
+      const NewUserMapScreen(userType: UserType.ambulance,),
       const AmbulanceProfile(),
     });
     super.initState();
