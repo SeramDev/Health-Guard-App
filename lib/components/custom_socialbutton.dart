@@ -7,9 +7,11 @@ class SocialButton extends StatelessWidget {
     Key? key,
     required this.iconPath,
     required this.onTap,
+    required this.text,
   }) : super(key: key);
 
   final String iconPath;
+  final String text;
   final Function() onTap;
 
   @override
@@ -17,8 +19,9 @@ class SocialButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        width: 220,
+        height: 40,
         padding: const EdgeInsets.symmetric(
-          vertical: 20,
           horizontal: 34,
         ),
         decoration: BoxDecoration(
@@ -32,7 +35,21 @@ class SocialButton extends StatelessWidget {
             ),
           ],
         ),
-        child: SvgPicture.asset(iconPath),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              iconPath,
+              height: 18,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
       ),
     );
   }

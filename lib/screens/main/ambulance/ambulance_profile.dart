@@ -9,6 +9,7 @@ import '../../../components/profile_menu_button.dart';
 import '../../../models/objects.dart';
 import '../../../providers/auth/user_provider.dart';
 import '../../../utils/app_colors.dart';
+import '../../../utils/assets_constants.dart';
 
 class AmbulanceProfile extends StatefulWidget {
   const AmbulanceProfile({super.key});
@@ -44,7 +45,19 @@ class _AmbulanceProfileState extends State<AmbulanceProfile> {
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryColor,
                           ),
-                        ),  
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const CircleAvatar(
+                          backgroundColor: AppColors.primaryColor,
+                          radius: 100,
+                          child: CircleAvatar(
+                            backgroundImage:
+                                AssetImage(AssetConstants.ambulanceProfile),
+                            radius: 96,
+                          ),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),

@@ -13,8 +13,9 @@ class CustomDropdownSignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 55,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(10),
         color: AppColors.kWhite,
         boxShadow: [
           BoxShadow(
@@ -39,7 +40,7 @@ class CustomDropdownSignUp extends StatelessWidget {
             },
             icon: const Icon(
               Icons.arrow_drop_down_sharp,
-              color: AppColors.primaryColor,
+              color: AppColors.kAsh,
             ),
             decoration: InputDecoration(
               labelText: "Role",

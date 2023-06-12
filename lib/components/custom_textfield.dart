@@ -16,8 +16,9 @@ class CustomTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(10),
         color: AppColors.kWhite,
         boxShadow: [
           BoxShadow(
@@ -32,7 +33,8 @@ class CustomTextfield extends StatelessWidget {
         obscureText: isObsecure,
         decoration: InputDecoration(
           labelText: lableText,
-          labelStyle: const TextStyle(color: AppColors.kAsh),
+          labelStyle: const TextStyle(
+              color: AppColors.kAsh, fontStyle: FontStyle.italic),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2),
             borderSide: const BorderSide(color: AppColors.kWhite),

@@ -12,27 +12,27 @@ class PoliceForm extends StatelessWidget {
     return Column(
       children: [
         CustomTextfield(
-          lableText: "Police Station Name",
+          lableText: "Police station name",
           //don't add (context, listen: false) when calling provider methods for property values.
           //add (listen: false) only when calling provider methods within a function.
           controller: Provider.of<SignUpProvider>(context).nameController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
-          lableText: "Police Station Address",
+          lableText: "Police station address",
           controller: Provider.of<SignUpProvider>(context).addressController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
-          lableText: "Police Station Email",
+          lableText: "Police station email",
           controller: Provider.of<SignUpProvider>(context).emailController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
           lableText: "Password",
