@@ -52,9 +52,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //For testing Hard coded the screen
       home:
-          const Splash(), //MainScreen(),//Home(),//UserMapScreen(),//Home(),//const Splash(), //PoliceMedicalMapScreen(user: User.police,),
+          const Splash(),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,

@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:health_guard/components/custom_text.dart';
 import '../../providers/auth/user_provider.dart';
 import '../../utils/assets_constants.dart';
 
@@ -29,19 +30,13 @@ class _SplashState extends State<Splash> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FadeInDown(child: Image.asset(AssetConstants.logo)),
-            const SizedBox(
-              height: 72.0,
+            FadeInDown(child: Image.asset(AssetConstants.mainImg)),
+            FadeInUp(
+              child: const CustomText("Health Guard",
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 145, 55, 167)),
             ),
-            // FadeInUp(
-            //   child: const CustomText(
-            //     "Shop Your Daily\nNecessary",
-            //     textAlign: TextAlign.center,
-            //     fontSize: 30,
-            //     fontWeight: FontWeight.w500,
-            //     color: AppColors.primaryColor,
-            //   ),
-            // ),
           ],
         ),
       ),

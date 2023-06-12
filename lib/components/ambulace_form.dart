@@ -12,27 +12,28 @@ class AmbulanceForm extends StatelessWidget {
     return Column(
       children: [
         CustomTextfield(
-          lableText: "Ambulance Name",
+          lableText: "Ambulance name",
           //don't add (context, listen: false) when calling provider methods for property values.
           //add (listen: false) only when calling provider methods within a function.
           controller: Provider.of<SignUpProvider>(context).nameController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
-          lableText: "Hospital Name",
-          controller: Provider.of<SignUpProvider>(context).hospitalNameController,
+          lableText: "Hospital name",
+          controller:
+              Provider.of<SignUpProvider>(context).hospitalNameController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
-          lableText: "Email Address",
+          lableText: "Email address",
           controller: Provider.of<SignUpProvider>(context).emailController,
         ),
         const SizedBox(
-          height: 14,
+          height: 12,
         ),
         CustomTextfield(
           lableText: "Password",

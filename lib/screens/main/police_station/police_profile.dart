@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:health_guard/utils/assets_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/custom_button.dart';
@@ -44,12 +45,25 @@ class _PoliceProfileState extends State<PoliceProfile> {
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryColor,
                           ),
-                        ),  
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const CircleAvatar(
+                          backgroundColor: AppColors.primaryColor,
+                          radius: 100,
+                          child: CircleAvatar(
+                            backgroundImage:
+                                AssetImage(AssetConstants.policeProfile),
+                            radius: 96,
+                          ),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
                         CustomText(
-                          (value.consumer as PoliceStationModel).policeStationName,
+                          (value.consumer as PoliceStationModel)
+                              .policeStationName,
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                         ),
@@ -57,7 +71,8 @@ class _PoliceProfileState extends State<PoliceProfile> {
                           height: 3,
                         ),
                         CustomText(
-                          (value.consumer as PoliceStationModel).PoliceStationEmail,
+                          (value.consumer as PoliceStationModel)
+                              .PoliceStationEmail,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

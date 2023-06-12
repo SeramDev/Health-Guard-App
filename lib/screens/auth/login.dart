@@ -34,30 +34,31 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               width: size.width,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 52,
+                    height: 270,
                   ),
                   const CustomText(
                     "Login",
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.kBalck,
+                  ),
+                  const CustomText(
+                    "We need some of your infomation to\nget started.",
+                    fontSize: 15,
+                    color: AppColors.kBalck,
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
-                  Image.asset(
-                    AssetConstants.logo,
-                    width: 202,
-                    height: 138,
-                  ),
+                  CustomDropdownLogin(),
                   const SizedBox(
-                    height: 39,
+                    height: 12,
                   ),
                   CustomTextfield(
-                    lableText: "Email",
+                    lableText: "example@gmail.com",
                     controller:
                         Provider.of<LoginProvider>(context).emailController,
                   ),
@@ -73,10 +74,6 @@ class _LoginState extends State<Login> {
                   const SizedBox(
                     height: 12,
                   ),
-                  CustomDropdownLogin(),
-                  const SizedBox(
-                    height: 16,
-                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: InkWell(
@@ -85,21 +82,22 @@ class _LoginState extends State<Login> {
                             context, const ForgotPassword());
                       },
                       child: const CustomText(
-                        "Forgot your password?",
-                        fontSize: 14,
+                        "Forgot Password?",
+                        fontSize: 13,
                       ),
                     ),
                   ),
                   const SizedBox(
-                    height: 29,
+                    height: 12,
                   ),
                   Consumer<LoginProvider>(
                     builder: (context, value, child) {
                       return CustomButton(
                         text: "Login",
                         isLoading: value.isLoading,
-                        height: 40,
+                        height: 37,
                         width: 170,
+                        radius: 20,
                         onTap: () {
                           value.startLogin(context);
                         },
@@ -107,40 +105,29 @@ class _LoginState extends State<Login> {
                     },
                   ),
                   const SizedBox(
-                    height: 23,
+                    height: 17,
                   ),
-                  const CustomText(
-                    "Or login with social account",
-                    fontSize: 14,
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SocialButton(
-                        iconPath: AssetConstants.googleIcon,
-                        onTap: () {},
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      SocialButton(
-                        iconPath: AssetConstants.fbIcon,
-                        onTap: () {},
-                      ),
-                    ],
+                  const Divider(
+                    thickness: 1,
+                    color: AppColors.kBalck,
                   ),
                   const SizedBox(
-                    height: 100,
+                    height: 17,
+                  ),
+                  SocialButton(
+                    text: "Continue with google",
+                    iconPath: AssetConstants.googleIcon,
+                    onTap: () {},
+                  ),
+                  const SizedBox(
+                    height: 30,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const CustomText(
                         "Don't you have an account?",
-                        fontSize: 14,
+                        fontSize: 13,
                       ),
                       const SizedBox(
                         width: 5,
@@ -153,7 +140,7 @@ class _LoginState extends State<Login> {
                           "Sign up",
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryRed,
                         ),
                       ),
                     ],
