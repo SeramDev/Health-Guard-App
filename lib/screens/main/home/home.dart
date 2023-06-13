@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:health_guard/components/blood_pressure_card.dart';
+import 'package:health_guard/new_fetcher/bloc/new_fetch.dart';
 import 'package:health_guard/providers/fetchdata_notifier.dart';
 import 'package:health_guard/screens/alert/alert.dart';
 import 'package:provider/provider.dart';
@@ -13,20 +16,27 @@ import '../../../components/sensor_data_card.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/assets_constants.dart';
 
-class Home extends StatefulWidget {
+class Home extends riverpod.ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  riverpod.ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends riverpod.ConsumerState<Home> {
+  Timer? _timer;
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      context.read<FetchDataNotifier>().startFetching();
+
+    ref.read(alertStateProvider.notifier).fetchUserData(context);
+
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      ref.read(alertStateProvider.notifier).fetchUserData(context);
     });
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   context.read<FetchDataNotifier>().startFetching();
+    // });
   }
 
   /*void showAlertOrNot() {
@@ -100,34 +110,38 @@ class _HomeState extends State<Home> {
     }*/
   //}
 
-  void alertNavigationAndSnakbarController() {
-    print("${context.read<FetchDataNotifier>().fetchData.runtimeType}");
-    if (context.read<FetchDataNotifier>().fetchData
-        is UpdateFetchDataWithNaviagtion) {
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (BuildContext context) {
-            return const AlertScreen();
-          },
-        ));
-      });
-    } else {
-      if (context.read<FetchDataNotifier>().fetchData
-          is UpdateFetchDataWithResetNotification) {
-        AnimatedSnackBar.rectangle(
-          'Resetted',
-          'Your Health checking paused for 20 min',
-          type: AnimatedSnackBarType.info,
-          brightness: Brightness.light,
-        ).show(
-          context,
-        );
-      }
-    }
-  }
+  // void alertNavigationAndSnakbarController() {
+  //   print("${context.read<FetchDataNotifier>().fetchData.runtimeType}");
+  //   if (context.read<FetchDataNotifier>().fetchData
+  //       is UpdateFetchDataWithNaviagtion) {
+  //     Future.delayed(const Duration(seconds: 2), () {
+  //       //!================================================================================
+  //       //! completely incorrect make LaertScreen for every rebuilt
+  //       // USE (listen instead watch)
+  //       Navigator.push(context, MaterialPageRoute(
+  //         builder: (BuildContext context) {
+  //           return const AlertScreen();
+  //         },
+  //       ));
+  //     });
+  //   } else {
+  //     if (context.read<FetchDataNotifier>().fetchData
+  //         is UpdateFetchDataWithResetNotification) {
+  //       AnimatedSnackBar.rectangle(
+  //         'Resetted',
+  //         'Your Health checking paused for 20 min',
+  //         type: AnimatedSnackBarType.info,
+  //         brightness: Brightness.light,
+  //       ).show(
+  //         context,
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    var state = ref.watch(alertStateProvider);
     return SafeArea(
       child: Scaffold(
         /*floatingActionButton: FloatingActionButton(
@@ -164,61 +178,44 @@ class _HomeState extends State<Home> {
                   height: 30,
                 ),
                 Expanded(
-                  child: Consumer<FetchDataNotifier>(
-                    builder: (context, value, child) {
-                      //
-                      //
-                      alertNavigationAndSnakbarController();
-                      //
-                      //
-                      return CardCollection(
+                  child: CardCollection(
                         cards: [
                           SensorDataCard(
                               title: "Heart Rate",
                               image_path: AssetConstants.heartRateIcon,
-                              value: value.fetchData is LoadedFetchData
-                                  ? ((value.fetchData as LoadedFetchData)
-                                      .sensorData
-                                      .heartRate)
+                              value: state is SucessFetchUserData
+                                  ? state.sensorDataModel.heartRate
                                   : 0.0,
-                              isLoading: value.fetchData is LoadingFetchData),
+                              isLoading: state is LoadingFetchUserData),
                           SensorDataCard(
                               title: "SpO2",
                               image_path: AssetConstants.spo2Icon,
-                              value: value.fetchData is LoadedFetchData
-                                  ? ((value.fetchData as LoadedFetchData)
-                                      .sensorData
-                                      .oxygenSaturation)
+                              value: state is SucessFetchUserData
+                                  ? state.sensorDataModel.oxygenSaturation
                                   : 0.0,
-                              isLoading: value.fetchData is LoadingFetchData),
+                              isLoading: state is LoadingFetchUserData),
                           SensorDataCard(
                               title: "Temperature",
                               image_path: AssetConstants.temperatureIcon,
-                              value: value.fetchData is LoadedFetchData
-                                  ? ((value.fetchData as LoadedFetchData)
-                                      .sensorData
-                                      .temperature)
+                              value: state is SucessFetchUserData
+                                  ? state.sensorDataModel.temperature
                                   : 0.0,
-                              isLoading: value.fetchData is LoadingFetchData),
+                              isLoading: state is LoadingFetchUserData),
                           BloodPressureCard(
                               title: "Blood Pressure",
                               image_path: AssetConstants.bloodPressureIcon,
-                              sbp: value.fetchData is LoadedFetchData
-                                  ? ((value.fetchData as LoadedFetchData)
-                                      .sensorData
-                                      .systolicBloodPressure)
+                              sbp: state is SucessFetchUserData
+                                  ? state.sensorDataModel.systolicBloodPressure
                                   : 0,
-                              dbp: value.fetchData is LoadedFetchData
-                                  ? ((value.fetchData as LoadedFetchData)
-                                      .sensorData
-                                      .diastolicBloodPressure)
+                              dbp: state is SucessFetchUserData
+                                  ? state.sensorDataModel.diastolicBloodPressure
                                   : 0,
-                              isLoading: value.fetchData is LoadingFetchData),
+                              isLoading: state is LoadingFetchUserData),
                         ],
-                      );
-                    },
+                      )
+                    //},
                   ),
-                ),
+                //),
                 const CustomText(
                   "Status",
                   fontSize: 25,
@@ -242,15 +239,16 @@ class _HomeState extends State<Home> {
                       )
                     ],
                   ),
-                  child: Consumer<FetchDataNotifier>(
-                    builder: (context, value, child) {
-                      if (value.fetchData is LoadedFetchData) {
+                  child: Builder(
+                    builder: (context) {
+                      if (state is SucessFetchUserData) {
                         return CustomText(
-                          value.fetchData is LoadedFetchData
+                          /*value.fetchData is LoadedFetchData
                               ? ((value.fetchData as LoadedFetchData)
                                   .sensorData
                                   .status)
-                              : "",
+                              : "",*/
+                              state.sensorDataModel.status,
                           fontSize: 30,
                           color: AppColors.kWhite,
                         );
