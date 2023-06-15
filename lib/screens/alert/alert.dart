@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
-import 'package:health_guard/providers/fetchdata_notifier.dart';
+import 'package:health_guard/new_fetcher/bloc/new_fetch.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
-import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../map/user_map_screen.dart';
@@ -12,20 +12,21 @@ import '../../map/widgets/map_section.dart';
 
 //sachin@gmail.com
 //sachin123
-class AlertScreen extends StatefulWidget {
+class AlertScreen extends riverpod.ConsumerStatefulWidget {
   const AlertScreen({super.key});
 
   @override
-  State<AlertScreen> createState() => _AlertScreenState();
+  riverpod.ConsumerState<AlertScreen> createState() => _AlertScreenState();
 }
 
-class _AlertScreenState extends State<AlertScreen> {
+class _AlertScreenState extends riverpod.ConsumerState<AlertScreen> {
   void onCancelPressed() {
     UtilFunctions.navigateToBackward(context);
     //
     //context.read<AlertNavigationNotifier>().onCancellPressed();
     //context.read<SensorDataNotifier>().startFetching();
-    context.read<FetchDataNotifier>().onCancell();
+    //context.read<FetchDataNotifier>().onCancell();
+    ref.read(alertStateProvider.notifier).incrementCancel();
   }
 
   @override
