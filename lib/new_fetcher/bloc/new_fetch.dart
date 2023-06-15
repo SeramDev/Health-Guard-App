@@ -131,10 +131,10 @@ class AlertNotifier extends StateNotifier<FetchedUserDataExternalState> {
     //must
     updateInternalStates(HideAlert());
     //
-    if (cancelCount == 2) {
+    if (cancelCount == 1) {
       cancelCount = 0;
       isAbnormalPaused = true;
-      Future.delayed(const Duration(minutes: 20), () {
+      Future.delayed(const Duration(minutes: 15), () {
         isAbnormalPaused = false;
       });
     } else {
@@ -153,9 +153,9 @@ class AlertNotifier extends StateNotifier<FetchedUserDataExternalState> {
   void showPausedSnackBar(BuildContext context) {
     AnimatedSnackBar.rectangle(
       'Resetted',
-      'Your Health checking paused for 20 min',
-      type: AnimatedSnackBarType.info,
-      brightness: Brightness.light,
+      'Your Health checking paused for 15 min',
+      type: AnimatedSnackBarType.success,
+      brightness: Brightness.dark,
     ).show(
       context,
     );

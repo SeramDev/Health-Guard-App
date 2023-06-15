@@ -5,14 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:health_guard/providers/auth/login_provider.dart';
 import 'package:health_guard/providers/auth/signup_provider.dart';
 import 'package:health_guard/providers/auth/user_provider.dart';
-import 'package:health_guard/providers/fetchdata_notifier.dart';
-import 'package:health_guard/screens/alert/alert.dart';
 import 'package:health_guard/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'new_fetcher/test_fetcher/fetcher_test.dart';
 import 'firebase_options.dart';
-import 'screens/main/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,8 +51,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-          Home(),//FetchTestScreen(),//const Splash(),
+      home: const Splash(),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         maxWidth: 1200,

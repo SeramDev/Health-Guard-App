@@ -3,7 +3,7 @@ import '../utils/app_colors.dart';
 import 'custom_text.dart';
 
 class CustomButton extends StatelessWidget {
-  CustomButton({
+  const CustomButton({
     Key? key,
     required this.text,
     required this.onTap,
@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   final double radius;
   final double fontsize;
   final Function() onTap;
-  bool isLoading;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
