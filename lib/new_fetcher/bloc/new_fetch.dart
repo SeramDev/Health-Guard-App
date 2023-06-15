@@ -152,10 +152,10 @@ class AlertNotifier extends StateNotifier<FetchedUserDataExternalState> {
 
   void showPausedSnackBar(BuildContext context) {
     AnimatedSnackBar.rectangle(
-      'Resetted',
-      'Your Health checking paused for 15 min',
-      type: AnimatedSnackBarType.success,
-      brightness: Brightness.dark,
+      'Warning!',
+      'Your Health checking is paused for 15 minutes.',
+      type: AnimatedSnackBarType.warning,
+      brightness: Brightness.light,
     ).show(
       context,
     );

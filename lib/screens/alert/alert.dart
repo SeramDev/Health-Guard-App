@@ -3,10 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:health_guard/components/custom_button.dart';
 import 'package:health_guard/components/custom_text.dart';
 import 'package:health_guard/new_fetcher/bloc/new_fetch.dart';
-import 'package:health_guard/providers/fetchdata_notifier.dart';
 import 'package:health_guard/utils/app_colors.dart';
 import 'package:health_guard/utils/util_functions.dart';
-import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../map/user_map_screen.dart';
