@@ -88,7 +88,7 @@ Future<ServiceResult> updateAndRequestLoacations({required String uid}) async {
    
     String jsonString = await compute(encodeJson, requestBody);
 
-    var url = Uri.parse('http://13.50.246.130/store-user-location');
+    var url = Uri.parse('http://13.50.246.130/old/store-user-location');
     var response = await http.post(
       url,
       body: jsonString,
