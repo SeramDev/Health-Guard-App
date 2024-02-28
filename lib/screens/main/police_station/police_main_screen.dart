@@ -45,7 +45,7 @@ class _PoliceMainState extends State<PoliceMain> {
       onWillPop: () async {
         AlertHelper.showAlert(
           context,
-          DialogType.QUESTION,
+          DialogType.question,
           "Exit",
           "Are you sure want to close the application?",
           () {

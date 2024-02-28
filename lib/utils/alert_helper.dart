@@ -13,7 +13,7 @@ class AlertHelper {
     AwesomeDialog(
         context: context,
         dialogType: dialogType,
-        animType: AnimType.BOTTOMSLIDE,
+        animType: AnimType.bottomSlide,
         title: title,
         desc: desc,
         btnCancelOnPress: () {},

@@ -42,14 +42,14 @@ class LoginProvider extends ChangeNotifier {
     //-------first checking all the textfields are empty or not
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please fill all the fields");
+          context, DialogType.error, "ERROR", "Please fill all the fields");
       return false;
     } else if (!_emailController.text.contains("@")) {
       AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please enter a valid email");
+          context, DialogType.error, "ERROR", "Please enter a valid email");
       return false;
     } else if (_passwordController.text.length < 6) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR",
+      AlertHelper.showAlert(context, DialogType.error, "ERROR",
           "Password must have more than 6 digits");
       return false;
     } else {
@@ -77,7 +77,7 @@ class LoginProvider extends ChangeNotifier {
     } catch (e) {
       setLoading(false);
       Logger().e(e);
-      AlertHelper.showAlert(context, DialogType.ERROR, "Error", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "Error", e.toString());
     }
   }
 }

@@ -56,14 +56,14 @@ class AuthController {
           //----------------if user created successfully show an alert
           // ignore: use_build_context_synchronously
           AlertHelper.showAlert(
-              context, DialogType.SUCCES, "Success", "Registration Success!");
+              context, DialogType.success, "Success", "Registration Success!");
         }
       });
     } on FirebaseAuthException catch (e) {
       //----------show error dialog
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.code);
     } catch (e) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.toString());
     }
   }
 
@@ -98,14 +98,14 @@ class AuthController {
           //----------------if user created successfully show an alert
           // ignore: use_build_context_synchronously
           AlertHelper.showAlert(
-              context, DialogType.SUCCES, "Success", "Registration Success!");
+              context, DialogType.success, "Success", "Registration Success!");
         }
       });
     } on FirebaseAuthException catch (e) {
       //----------show error dialog
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.code);
     } catch (e) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.toString());
     }
   }
 
@@ -140,14 +140,14 @@ class AuthController {
           //----------------if user created successfully show an alert
           // ignore: use_build_context_synchronously
           AlertHelper.showAlert(
-              context, DialogType.SUCCES, "Success", "Registration Success!");
+              context, DialogType.success, "Success", "Registration Success!");
         }
       });
     } on FirebaseAuthException catch (e) {
       //----------show error dialog
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.code);
     } catch (e) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.toString());
     }
   }
 
@@ -234,9 +234,9 @@ class AuthController {
       );
     } on FirebaseAuthException catch (e) {
       //----------show error dialog
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.code);
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.code);
     } catch (e) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.toString());
     }
   }
 
@@ -252,7 +252,7 @@ class AuthController {
         .sendPasswordResetEmail(email: email)
         .then((value) {
       //-------------show dialog when the email is sent
-      AlertHelper.showAlert(context, DialogType.SUCCES, "Reset Email Sent!",
+      AlertHelper.showAlert(context, DialogType.success, "Reset Email Sent!",
           "Please check your inbox");
     });
   }
@@ -282,7 +282,7 @@ class AuthController {
 
       return downloadUrl;
     } catch (e) {
-      AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
+      AlertHelper.showAlert(context, DialogType.error, "ERROR", e.toString());
       return "";
     }
   }
