@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,24 +7,35 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_guard/screens/main/home/home.dart';
 import 'package:health_guard/screens/main/profile/profile.dart';
 import 'package:health_guard/utils/app_colors.dart';
+import '../../new_fetcher/bloc/new_fetch.dart';
 import '../../utils/alert_helper.dart';
 import '../../utils/assets_constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends riverpod.ConsumerStatefulWidget {
   const MainScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  riverpod.ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends riverpod.ConsumerState<MainScreen> {
+  Timer? _timer;
   @override
   void initState() {
     _screens.addAll({
       const Home(),
       const Profile(),
+    });
+
+    super.initState();
+
+    ref.read(alertStateProvider.notifier).fetchUserData(context);
+
+    _timer = Timer.periodic(const Duration(seconds: 15), (Timer timer) {
+      ref.read(alertStateProvider.notifier).fetchUserData(context);
     });
     super.initState();
   }
@@ -45,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () async {
         AlertHelper.showAlert(
           context,
-          DialogType.QUESTION,
+          DialogType.question,
           "Exit",
           "Are you sure want to close the application?",
           () {
@@ -88,5 +101,11 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }

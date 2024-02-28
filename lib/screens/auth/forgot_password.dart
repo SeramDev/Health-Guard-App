@@ -110,11 +110,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     //-------first checking all the textfields are empty or not
     if (emailController.text.isEmpty) {
       AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please fill all the fields");
+          context, DialogType.error, "ERROR", "Please fill all the fields");
       return false;
     } else if (!emailController.text.contains("@")) {
       AlertHelper.showAlert(
-          context, DialogType.ERROR, "ERROR", "Please enter a valid email");
+          context, DialogType.error, "ERROR", "Please enter a valid email");
       return false;
     } else {
       return true;

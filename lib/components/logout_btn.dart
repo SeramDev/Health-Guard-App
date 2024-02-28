@@ -17,7 +17,7 @@ class LogoutBtn extends StatelessWidget {
       onTap: () {
         AlertHelper.showAlert(
           context,
-          DialogType.QUESTION,
+          DialogType.question,
           "Logout",
           "Are you sure want to Logout?",
           () {

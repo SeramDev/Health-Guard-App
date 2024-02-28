@@ -44,7 +44,7 @@ class _AmbulanceMainState extends State<AmbulanceMain> {
       onWillPop: () async {
         AlertHelper.showAlert(
           context,
-          DialogType.QUESTION,
+          DialogType.question,
           "Exit",
           "Are you sure want to close the application?",
           () {

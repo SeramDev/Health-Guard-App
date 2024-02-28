@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import '../models/objects.dart';
 
 class SensorDataController {
-  final endpointUrl = "http://13.50.246.130/fetch-user-status?uid=123";
+  final endpointUrl = "http://13.50.246.130/new/fetch-user-status?uid=123";
 
   Future<SensorDataModel> fetchData() async {
     Response res;
