@@ -50,7 +50,7 @@ class ErrorUserDetailServiceResult extends UserDetailServiceResult {}
 Future<UserDetailServiceResult> getUserDetails() async {
   // 1 get curent user location using Geolocattoer package
   try {
-    var url = Uri.parse('http://13.50.246.130/new/fetch-user-status?uid=123');
+    var url = Uri.parse('http://16.171.170.137/fetch-user-status?uid=123');
     var response = await http.get(
       url,
     );

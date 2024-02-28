@@ -19,7 +19,7 @@ class SocialButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 220,
+        width: 230,
         height: 40,
         padding: const EdgeInsets.symmetric(
           horizontal: 34,
